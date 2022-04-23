@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Rigidbody2D rigidbody;
+    public Rigidbody2D rbody;
     public float playerSpeed;
     public float jumpSpeed;
 
@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        rbody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     {
         // A + D or left and right arrow keys to move left and right
         float horizontalInput = Input.GetAxis("Horizontal");
-        rigidbody.velocity = new Vector2(horizontalInput * playerSpeed, rigidbody.velocity.y);
+        rbody.velocity = new Vector2(horizontalInput * playerSpeed, rbody.velocity.y);
 
         // Flip player in the direction they're moving in
         if (horizontalInput > 0.01f)
@@ -41,12 +41,13 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        rigidbody.velocity = new Vector2(rigidbody.velocity.x, jumpSpeed);
+        rbody.velocity = new Vector2(rbody.velocity.x, jumpSpeed);
         grounded = false;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        // on ground (if not jumping)
         if (collision.gameObject.tag == "Ground")
         {
             grounded = true;

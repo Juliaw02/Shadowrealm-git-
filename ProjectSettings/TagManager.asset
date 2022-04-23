@@ -5,6 +5,16 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Crypt1_1
+  - Hall1
+  - Hall2_bL
+  - Crypt1_2
+  - Crypt2_1
+  - Hall2_tL
+  - Hall3_1
+  - Crypt2_2
+  - Crypt3_1
+  - Hall3_2
   layers:
   - Default
   - TransparentFX
