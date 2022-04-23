@@ -5,9 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Scenes/Hall 1.unity
     guid: eec686578879b9f42ae30a6da4f8dbf5
@@ -23,7 +20,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Hall 3.unity
     guid: 726160de0fff9e142ad9696e889fe7aa
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/Crypt 3.unity
-    guid: 608761c760bd18e469e7f547f89207f8
+    path: Assets/Scenes/Crypt_3.unity
+    guid: 26ebb2fa14815264dacd0a582b6406fc
+  - enabled: 1
+    path: Assets/Scenes/Hall 4.unity
+    guid: 1adc95b565f9c8d428b2e7abb50c1294
+  - enabled: 1
+    path: Assets/Scenes/Crypt 4.unity
+    guid: a0cdf117b8ba55e4ab3c891b15d5fcd1
   m_configObjects: {}

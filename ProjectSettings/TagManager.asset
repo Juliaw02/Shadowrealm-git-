@@ -15,6 +15,14 @@ TagManager:
   - Crypt2_2
   - Crypt3_1
   - Hall3_2
+  - Crypt3_2
+  - Hall2_bR
+  - Hall4_1
+  - Hall2_tR
+  - Crypt4_1
+  - Hall4_2
+  - Crypt4_2
+  - Hall5_bR
   layers:
   - Default
   - TransparentFX
