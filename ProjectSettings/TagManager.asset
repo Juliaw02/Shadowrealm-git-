@@ -23,6 +23,12 @@ TagManager:
   - Hall4_2
   - Crypt4_2
   - Hall5_bR
+  - Crypt5_1
+  - Hall5_tR
+  - Hall6_bL
+  - Crypt5_2
+  - Hall7
+  - Hall6_tL
   layers:
   - Default
   - TransparentFX

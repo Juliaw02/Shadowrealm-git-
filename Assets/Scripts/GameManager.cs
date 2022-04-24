@@ -120,5 +120,38 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene("Hall 3");
         }
+
+        // from Hall 5 to Crypt 5
+        if (this.gameObject.tag == "Crypt5_1" && other.gameObject.tag == "Player")
+        {
+            SceneManager.LoadScene("Crypt 3");
+        }
+        // from Crypt 5 back to Hall 5 (top right)
+        if (this.gameObject.tag == "Hall5_tR" && other.gameObject.tag == "Player")
+        {
+            SceneManager.LoadScene("Hall 3");
+        }
+
+        // from Crypt 5 to Hall 6 (bottom left)
+        if (this.gameObject.tag == "Hall6_bL" && other.gameObject.tag == "Player")
+        {
+            SceneManager.LoadScene("Crypt 3");
+        }
+        // from Hall 6 back to Crypt 5
+        if (this.gameObject.tag == "Crypt5_2" && other.gameObject.tag == "Player")
+        {
+            SceneManager.LoadScene("Hall 3");
+        }
+
+        // from Hall 6 to Hall 7
+        if (this.gameObject.tag == "Hall7" && other.gameObject.tag == "Player")
+        {
+            SceneManager.LoadScene("Crypt 3");
+        }
+        // from Hall 7 back to Hall 6 (top left)
+        if (this.gameObject.tag == "Hall6_tL" && other.gameObject.tag == "Player")
+        {
+            SceneManager.LoadScene("Hall 3");
+        }
     }
 }
