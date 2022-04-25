@@ -29,6 +29,12 @@ TagManager:
   - Crypt5_2
   - Hall7
   - Hall6_tL
+  - sBoss_bot
+  - Hall6_bR
+  - sBoss_top
+  - bossRoom
+  - Hall6_tR
+  - eternalPeace
   layers:
   - Default
   - TransparentFX
