@@ -32,4 +32,22 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Crypt 4.unity
     guid: a0cdf117b8ba55e4ab3c891b15d5fcd1
+  - enabled: 1
+    path: Assets/Scenes/Hall 5.unity
+    guid: 161283085aada104ba438352c6d4cdbb
+  - enabled: 1
+    path: Assets/Scenes/Crypt 5.unity
+    guid: d4d5dcc85370cf84087ba5bc2a53ac5c
+  - enabled: 1
+    path: Assets/Scenes/Hall 6.unity
+    guid: 077a8b6210daded4fbf06c9e2513bdb5
+  - enabled: 1
+    path: Assets/Scenes/Hall 7.unity
+    guid: e5d8865445a01c54f8027c925e24c8a0
+  - enabled: 1
+    path: Assets/Scenes/Sister Boss.unity
+    guid: fa4d75086bf53ee488b510ec9f3272d0
+  - enabled: 1
+    path: Assets/Scenes/Boss Room.unity
+    guid: 5a6cb3ce4213f7443a5fac628442a610
   m_configObjects: {}

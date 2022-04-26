@@ -4,23 +4,28 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Rigidbody2D rbody;
+    private Rigidbody2D rbody;
+    private BoxCollider2D boxCol;
+    public LayerMask groundLayer;
+    public LayerMask wallLayer;
     public float playerSpeed;
+    public float jumpPower;
     public float jumpSpeed;
-
-    private bool grounded;
+    private float wallJumpCooldown;
+    private float horizontalInput;
 
     // Start is called before the first frame update
     void Start()
     {
         rbody = GetComponent<Rigidbody2D>();
+        boxCol = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
         // A + D or left and right arrow keys to move left and right
-        float horizontalInput = Input.GetAxis("Horizontal");
+        horizontalInput = Input.GetAxis("Horizontal");
         rbody.velocity = new Vector2(horizontalInput * playerSpeed, rbody.velocity.y);
 
         // Flip player in the direction they're moving in
@@ -33,24 +38,69 @@ public class PlayerController : MonoBehaviour
         }
 
         // Space to jump
-        if (Input.GetKey(KeyCode.Space) && grounded)
+        if (Input.GetKey(KeyCode.Space) && isGrounded())
         {
             Jump();
+        }
+
+        // Wall jumping
+        if (wallJumpCooldown > 0.2f)
+        {
+            rbody.velocity = new Vector2(horizontalInput * playerSpeed, rbody.velocity.y);
+
+            if (onWall() && !isGrounded())
+            {
+                rbody.gravityScale = 0;
+                rbody.velocity = Vector2.zero;
+            }
+            else
+            {
+                rbody.gravityScale = 2;
+            }
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                Jump();
+            }
+        } else
+        {
+            wallJumpCooldown += Time.deltaTime;
         }
     }
 
     private void Jump()
     {
-        rbody.velocity = new Vector2(rbody.velocity.x, jumpSpeed);
-        grounded = false;
+        if (isGrounded())
+        {
+            rbody.velocity = new Vector2(rbody.velocity.x, jumpPower);
+        } else if (onWall() && !isGrounded())
+        {
+            if (horizontalInput == 0)
+            {
+                rbody.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 10, 0);
+                transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            } else
+            {
+                rbody.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 3, 6);
+            }
+            wallJumpCooldown = 0;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // on ground (if not jumping)
-        if (collision.gameObject.tag == "Ground")
-        {
-            grounded = true;
-        }
+        
+    }
+
+    private bool isGrounded()
+    {
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
+        return raycastHit.collider != null;
+    }
+
+    private bool onWall()
+    {
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
+        return raycastHit.collider != null;
     }
 }
