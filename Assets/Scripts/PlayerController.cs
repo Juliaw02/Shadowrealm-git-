@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     public float playerSpeed;
     public float jumpPower;
     public float jumpSpeed;
+    public float playerScaleX;
+    public float playerScaleY;
+
     private float wallJumpCooldown;
     private float horizontalInput;
 
@@ -31,10 +34,11 @@ public class PlayerController : MonoBehaviour
         // Flip player in the direction they're moving in
         if (horizontalInput > 0.01f)
         {
-            transform.localScale = new Vector3(0.5f, 1, 1);
-        } else if (horizontalInput < -0.0f)
+            transform.localScale = new Vector3(playerScaleX, playerScaleY, 1);
+        } 
+        else if (horizontalInput < -0.0f)
         {
-            transform.localScale = new Vector3(-0.5f, 1, 1);
+            transform.localScale = new Vector3(playerScaleX, playerScaleY, 1);
         }
 
         // Space to jump
@@ -62,24 +66,28 @@ public class PlayerController : MonoBehaviour
             {
                 Jump();
             }
-        } else
+        } 
+        else
         {
             wallJumpCooldown += Time.deltaTime;
         }
     }
 
+    // Jump mechanics
     private void Jump()
     {
         if (isGrounded())
         {
             rbody.velocity = new Vector2(rbody.velocity.x, jumpPower);
-        } else if (onWall() && !isGrounded())
+        } 
+        else if (onWall() && !isGrounded())
         {
             if (horizontalInput == 0)
             {
                 rbody.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 10, 0);
                 transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-            } else
+            } 
+            else
             {
                 rbody.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 3, 6);
             }
@@ -92,12 +100,14 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    // Check if player is on the ground
     private bool isGrounded()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
         return raycastHit.collider != null;
     }
 
+    // Check if player is on a wall
     private bool onWall()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
