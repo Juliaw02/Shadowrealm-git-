@@ -34,11 +34,11 @@ public class PlayerController : MonoBehaviour
         // Flip player in the direction they're moving in
         if (horizontalInput > 0.01f)
         {
-            transform.localScale = new Vector3(playerScaleX, playerScaleY, 1);
+            transform.localScale = new Vector3(-playerScaleX, playerScaleY, 1);
         } 
         else if (horizontalInput < -0.0f)
         {
-            transform.localScale = new Vector3(playerScaleX, playerScaleY, 1);
+            transform.localScale = Vector3.one;
         }
 
         // Space to jump
