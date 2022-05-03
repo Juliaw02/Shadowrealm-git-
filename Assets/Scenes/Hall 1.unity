@@ -170,7 +170,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7751678, y: 1}
+    m_SensorSize: {x: 1.7756459, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1320,6 +1320,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3370041600363841624, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d45c5ffd8368c9f4ab401d56421fa3fb, type: 2}
     - target: {fileID: 6626119733813076984, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1413,6 +1417,10 @@ PrefabInstance:
       value: -0.0012970567
       objectReference: {fileID: 0}
     - target: {fileID: 6626119733813076988, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6626119733813076988, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 2
       objectReference: {fileID: 0}
@@ -1422,6 +1430,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6626119733813076989, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
       propertyPath: m_GravityScale
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6626119733813076991, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
+      propertyPath: m_Size.y
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6626119733813076991, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}

@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rbody;
     private BoxCollider2D boxCol;
+    private Animator anim;
+
     public LayerMask groundLayer;
     public LayerMask wallLayer;
     public float playerSpeed;
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour
     {
         rbody = GetComponent<Rigidbody2D>();
         boxCol = GetComponent<BoxCollider2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -71,6 +74,9 @@ public class PlayerController : MonoBehaviour
         {
             wallJumpCooldown += Time.deltaTime;
         }
+
+        // Setting animator parameters
+        anim.SetBool("PlayerRun", horizontalInput != 0);
     }
 
     // Jump mechanics
