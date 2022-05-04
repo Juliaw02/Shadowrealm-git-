@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviour
 
         // Setting animator parameters
         anim.SetBool("PlayerRun", horizontalInput != 0);
+        anim.SetBool("Grounded", isGrounded());
     }
 
     // Jump mechanics
@@ -85,6 +86,7 @@ public class PlayerController : MonoBehaviour
         if (isGrounded())
         {
             rbody.velocity = new Vector2(rbody.velocity.x, jumpPower);
+            anim.SetTrigger("Jump");
         } 
         else if (onWall() && !isGrounded())
         {
