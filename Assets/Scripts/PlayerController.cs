@@ -10,14 +10,26 @@ public class PlayerController : MonoBehaviour
 
     public LayerMask groundLayer;
     public LayerMask wallLayer;
-    public float playerSpeed;
-    public float jumpPower;
-    public float jumpSpeed;
-    public float playerScaleX;
-    public float playerScaleY;
+    public float playerSpeed = 8f;
+    public float jumpPower = 15f;
+    public float jumpSpeed = 20f;
+    public float playerScaleX = 1f;
+    public float playerScaleY = 1f;
 
-    private float wallJumpCooldown;
     private float horizontalInput;
+
+    // Double jumps
+    private int extraJumps = 1;
+    private int jumpCounter = 0;
+
+    // Coyote time (if you walk off a cliff you can still jump after)
+    public float coyoteTimer = .25f;
+    private float coyoteCounter;
+
+    // Wall jumping
+    public float wallJumpX = 200f;
+    public float wallJumpY = 100f;
+    //private float wallJumpCooldown;
 
     // Start is called before the first frame update
     void Start()
@@ -44,63 +56,87 @@ public class PlayerController : MonoBehaviour
             transform.localScale = Vector3.one;
         }
 
-        // Space to jump
-        if (Input.GetKey(KeyCode.Space) && isGrounded())
+        // Setting animator parameters
+        anim.SetBool("PlayerRun", horizontalInput != 0);
+        anim.SetBool("Grounded", isGrounded());
+
+
+        // Jumping
+        if (Input.GetKey(KeyCode.Space))
         {
             Jump();
         }
 
-        // Wall jumping
-        if (wallJumpCooldown > 0.2f)
+        // Adjustable jump height
+        if (Input.GetKeyUp(KeyCode.Space) && rbody.velocity.y > 0)
         {
-            rbody.velocity = new Vector2(horizontalInput * playerSpeed, rbody.velocity.y);
+            rbody.velocity = new Vector2(rbody.velocity.x, rbody.velocity.y / 2);
+        }
 
-            if (onWall() && !isGrounded())
+        if (onWall())
+        {
+            rbody.gravityScale = 0;
+            rbody.velocity = Vector2.zero;
+        }
+        else
+        {
+            rbody.gravityScale = 2.5f;
+            rbody.velocity = new Vector2(horizontalInput * jumpSpeed, rbody.velocity.y);
+            
+            // Reset counters when grounded
+            if (isGrounded())
             {
-                rbody.gravityScale = 0;
-                rbody.velocity = Vector2.zero;
+                coyoteCounter = coyoteTimer;
+                //jumpCounter = extraJumps;
             }
             else
             {
-                rbody.gravityScale = 2;
+                coyoteCounter -= Time.deltaTime;
             }
-
-            if (Input.GetKey(KeyCode.Space))
-            {
-                Jump();
-            }
-        } 
-        else
-        {
-            wallJumpCooldown += Time.deltaTime;
         }
-
-        // Setting animator parameters
-        anim.SetBool("PlayerRun", horizontalInput != 0);
-        anim.SetBool("Grounded", isGrounded());
     }
 
     // Jump mechanics
     private void Jump()
     {
-        if (isGrounded())
+        // If you aren't on a wall or doing anything crazy, don't do anything
+        if (coyoteCounter <= 0 && !onWall() && jumpCounter <= 0) return;
+
+        // Add sound for jump?
+
+        if (onWall())
         {
-            rbody.velocity = new Vector2(rbody.velocity.x, jumpPower);
-            anim.SetTrigger("Jump");
-        } 
-        else if (onWall() && !isGrounded())
-        {
-            if (horizontalInput == 0)
-            {
-                rbody.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 10, 0);
-                transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-            } 
-            else
-            {
-                rbody.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 3, 6);
-            }
-            wallJumpCooldown = 0;
+            WallJump();
         }
+        else
+        {
+            // Normal jump
+            if (isGrounded())
+            {
+                rbody.velocity = new Vector2(rbody.velocity.x, jumpPower);
+            }
+            // Coyote jump
+            else if (coyoteCounter > coyoteTimer)
+            {
+                    rbody.velocity = new Vector2(rbody.velocity.x, jumpPower);
+            }
+            // Double jump
+            else if (jumpCounter < extraJumps)
+            {
+                rbody.velocity = new Vector2(rbody.velocity.x, jumpPower);
+                Debug.Log("jumpCounter++");
+                jumpCounter++;
+            }
+            
+            // reset the counter to avoid double jump
+            coyoteCounter = 0;
+        }
+    }
+
+    private void WallJump()
+    {
+        rbody.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * wallJumpX, wallJumpY));
+       // wallJumpCooldown = 0;
     }
 
     // Check if player is on the ground
@@ -115,10 +151,5 @@ public class PlayerController : MonoBehaviour
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
         return raycastHit.collider != null;
-    }
-
-    public bool canAttack()
-    {
-        return !onWall();
     }
 }

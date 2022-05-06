@@ -152,12 +152,15 @@ MonoBehaviour:
     m_Bits: 64
   wallLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   playerSpeed: 8
-  jumpPower: 0
-  jumpSpeed: 10
-  playerScaleX: 0
-  playerScaleY: 0
+  jumpPower: 15
+  jumpSpeed: 20
+  playerScaleX: 1
+  playerScaleY: 1
+  coyoteTimer: 0.25
+  wallJumpX: 200
+  wallJumpY: 100
 --- !u!114 &6626119733813076987
 MonoBehaviour:
   m_ObjectHideFlags: 0
