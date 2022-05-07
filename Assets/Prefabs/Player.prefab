@@ -158,6 +158,9 @@ MonoBehaviour:
   jumpSpeed: 20
   playerScaleX: 1
   playerScaleY: 1
+  extraJumps: 0
+  jumpBuffer: 0
+  canDoubleJump: 0
   coyoteTimer: 0.25
   wallJumpX: 200
   wallJumpY: 100

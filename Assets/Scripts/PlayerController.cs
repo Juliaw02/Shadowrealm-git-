@@ -10,26 +10,32 @@ public class PlayerController : MonoBehaviour
 
     public LayerMask groundLayer;
     public LayerMask wallLayer;
-    public float playerSpeed = 8f;
-    public float jumpPower = 15f;
-    public float jumpSpeed = 20f;
-    public float playerScaleX = 1f;
-    public float playerScaleY = 1f;
+    public float playerSpeed;
+    public float jumpPower;
+    public float jumpSpeed;
+    public float playerScaleX;
+    public float playerScaleY;
 
     private float horizontalInput;
 
+    public Transform RightBoob;
+
     // Double jumps
-    private int extraJumps = 1;
-    private int jumpCounter = 0;
+    public int extraJumps;
+    private int jumpCounter;
+    public float jumpBuffer;
+    public int canDoubleJump;
+    public float wallSlidingSpeed;
 
     // Coyote time (if you walk off a cliff you can still jump after)
-    public float coyoteTimer = .25f;
+    public float coyoteTimer;
     private float coyoteCounter;
 
     // Wall jumping
-    public float wallJumpX = 200f;
-    public float wallJumpY = 100f;
-    //private float wallJumpCooldown;
+    public float wallJumpX;
+    public float wallJumpY;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -45,21 +51,31 @@ public class PlayerController : MonoBehaviour
         // A + D or left and right arrow keys to move left and right
         horizontalInput = Input.GetAxis("Horizontal");
         rbody.velocity = new Vector2(horizontalInput * playerSpeed, rbody.velocity.y);
+        if (isGrounded() || onWall()) {
+            jumpBuffer = 0;
+            jumpCounter = 1;
+            if (isGrounded()) {
+                canDoubleJump = 0;
+            } else {
+                canDoubleJump = 1;
+            }
+        } else {
+            jumpBuffer += Time.deltaTime;
+        }
+
 
         // Flip player in the direction they're moving in
-        if (horizontalInput > 0.01f)
+        if (horizontalInput > 0.0f)
         {
-            transform.localScale = new Vector3(-playerScaleX, playerScaleY, 1);
+            transform.localScale = new Vector3(playerScaleX, playerScaleY, 1);
         } 
         else if (horizontalInput < -0.0f)
         {
-            transform.localScale = Vector3.one;
+            transform.localScale = new Vector3(-playerScaleX, playerScaleY, 1);
         }
-
         // Setting animator parameters
         anim.SetBool("PlayerRun", horizontalInput != 0);
         anim.SetBool("Grounded", isGrounded());
-
 
         // Jumping
         if (Input.GetKey(KeyCode.Space))
@@ -71,26 +87,30 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space) && rbody.velocity.y > 0)
         {
             rbody.velocity = new Vector2(rbody.velocity.x, rbody.velocity.y / 2);
+            canDoubleJump = 1;
         }
 
         if (onWall())
         {
-            rbody.gravityScale = 0;
-            rbody.velocity = Vector2.zero;
+            rbody.velocity = new Vector2(rbody.velocity.x, Mathf.Clamp(rbody.velocity.y, -wallSlidingSpeed, float.MaxValue));
+            //canWallJump = 1;
+            //rbody.gravityScale = 0;
+            //rbody.velocity = Vector2.zero;
         }
         else
         {
             rbody.gravityScale = 2.5f;
-            rbody.velocity = new Vector2(horizontalInput * jumpSpeed, rbody.velocity.y);
+            rbody.velocity = new Vector2(horizontalInput * playerSpeed, rbody.velocity.y);
             
             // Reset counters when grounded
             if (isGrounded())
             {
                 coyoteCounter = coyoteTimer;
-                //jumpCounter = extraJumps;
+                jumpCounter = extraJumps;
             }
             else
             {
+                // Decrease the coyote counter when the player is not grounded
                 coyoteCounter -= Time.deltaTime;
             }
         }
@@ -102,32 +122,37 @@ public class PlayerController : MonoBehaviour
         // If you aren't on a wall or doing anything crazy, don't do anything
         if (coyoteCounter <= 0 && !onWall() && jumpCounter <= 0) return;
 
-        // Add sound for jump?
+        //anim.SetTrigger("Jump");
 
+        // Add sound for jump?
         if (onWall())
         {
             WallJump();
         }
         else
         {
-            // Normal jump
-            if (isGrounded())
-            {
+            if (isGrounded()) {
+
                 rbody.velocity = new Vector2(rbody.velocity.x, jumpPower);
-            }
-            // Coyote jump
-            else if (coyoteCounter > coyoteTimer)
-            {
+            } else {
+                // If you are within the .25 sec time frame, you can do the coyote jump
+                if (coyoteCounter < 0.4 && coyoteCounter > 0)
+                {
                     rbody.velocity = new Vector2(rbody.velocity.x, jumpPower);
+                    coyoteCounter = -1;
+                }
+                else 
+                {
+                    // If you have extra jumps left, you can double jump
+                    if (jumpCounter > 0 && jumpBuffer > 0.25 && canDoubleJump == 1)
+                    {
+                        rbody.velocity = new Vector2(rbody.velocity.x, 0);
+                        rbody.velocity = new Vector2(rbody.velocity.x, jumpPower);
+                        jumpCounter--;
+                    }
+                }
             }
-            // Double jump
-            else if (jumpCounter < extraJumps)
-            {
-                rbody.velocity = new Vector2(rbody.velocity.x, jumpPower);
-                Debug.Log("jumpCounter++");
-                jumpCounter++;
-            }
-            
+
             // reset the counter to avoid double jump
             coyoteCounter = 0;
         }
@@ -135,8 +160,14 @@ public class PlayerController : MonoBehaviour
 
     private void WallJump()
     {
-        rbody.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * wallJumpX, wallJumpY));
-       // wallJumpCooldown = 0;
+        /**if (horizontalInput > 0.01f)
+        {
+            transform.localScale = new Vector3(-playerScaleX, playerScaleY, 1);
+        }  */               
+        rbody.velocity = new Vector2(0, 0);
+        rbody.velocity = new Vector2(-horizontalInput * 100, jumpPower);
+
+        //rbody.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) + wallJumpX, jumpPower);
     }
 
     // Check if player is on the ground
@@ -146,10 +177,19 @@ public class PlayerController : MonoBehaviour
         return raycastHit.collider != null;
     }
 
-    // Check if player is on a wall
+    // Check if player is on a wall.'
     private bool onWall()
     {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
-        return raycastHit.collider != null;
+        return Physics2D.OverlapCircle(RightBoob.position, RightBoob.GetComponent<CircleCollider2D>().radius, wallLayer);
+
+    
+        //RaycastHit2D raycastHit = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
+        //RaycastHit2D raycastHit2 = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, new Vector2(-transform.localScale.x, 0), 0.1f, wallLayer);
+        //return (raycastHit.collider != null && raycastHit2.collider != null);
+    }
+
+    public bool canAttack()
+    {
+        return !onWall();
     }
 }
