@@ -26,11 +26,10 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("Crypt 1");
         }
         // From Crypt 1 back to Hall 1
-        if (this.gameObject.tag == "Hall1" && other.gameObject.tag == "Player")
-        {
-            SceneManager.LoadScene("Hall 1");
-            //other.transform.position = new Vector2(200, -2.632f);
-        }
+        //if (this.gameObject.tag == "Hall1" && other.gameObject.tag == "Player")
+        //{
+            //SceneManager.LoadScene("Hall_1");
+        //}
 
         // From Crypt 1 to Hall 2 (bottom left)
         if (this.gameObject.tag == "Hall2_bL" && other.gameObject.tag == "Player")
@@ -68,7 +67,7 @@ public class GameManager : MonoBehaviour
         // From Hall 3 to Crypt 3
         if (this.gameObject.tag == "Crypt3_1" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Crypt 3");
+            SceneManager.LoadScene("Crypt_3");
         }
         // From Crypt 3 back to Hall 3
         if (this.gameObject.tag == "Hall3_2" && other.gameObject.tag == "Player")

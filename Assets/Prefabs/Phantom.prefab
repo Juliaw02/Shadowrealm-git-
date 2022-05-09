@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2487415003387966720}
   - component: {fileID: 1170789018582386583}
   - component: {fileID: 5589317404460306583}
+  - component: {fileID: -4267376105780597650}
   m_Layer: 0
   m_Name: Phantom
   m_TagString: Untagged
@@ -122,3 +123,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-4267376105780597650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3585910109706998591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0d31c262de9a1241a1c9cbc0d8f3b74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

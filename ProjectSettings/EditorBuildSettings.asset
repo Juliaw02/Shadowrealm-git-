@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Hall 1.unity
     guid: eec686578879b9f42ae30a6da4f8dbf5
   - enabled: 1
+    path: Assets/Scenes/Hall_1.unity
+    guid: 25e2848a308f7104480cddb8817000d9
+  - enabled: 1
     path: Assets/Scenes/Crypt 1.unity
     guid: 37c5a1dd3b961b04ab73fe1f92f17e21
   - enabled: 1

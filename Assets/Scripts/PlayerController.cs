@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     public LayerMask wallLayer;
     public Transform RightBoob;
+    public Transform Hall1Spawn;
     public float playerSpeed;
     public float jumpPower;
     public float jumpSpeed;
@@ -177,6 +178,15 @@ public class PlayerController : MonoBehaviour
         rbody.velocity = new Vector2(-horizontalInput * 100, jumpPower);
 
         //rbody.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) + wallJumpX, jumpPower);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Spawn point for getting back to Hall 1
+        if (collision.tag == "Hall1")
+        {
+            transform.position = Hall1Spawn.position;
+        }
     }
 
     // Check if player is on the ground
