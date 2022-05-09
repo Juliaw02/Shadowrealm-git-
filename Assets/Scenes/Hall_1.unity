@@ -441,7 +441,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &889562213
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1611,19 +1611,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6626119733813076988, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
       propertyPath: m_Size.x
-      value: 0.72229564
+      value: 0.8238584
       objectReference: {fileID: 0}
     - target: {fileID: 6626119733813076988, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
       propertyPath: m_Size.y
-      value: 1.9619488
+      value: 1.953204
       objectReference: {fileID: 0}
     - target: {fileID: 6626119733813076988, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
       propertyPath: m_Offset.x
-      value: -0.021300912
+      value: 0.0060429573
       objectReference: {fileID: 0}
     - target: {fileID: 6626119733813076988, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
       propertyPath: m_Offset.y
-      value: -0.0012970567
+      value: -0.0047371984
       objectReference: {fileID: 0}
     - target: {fileID: 6626119733813076988, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.y

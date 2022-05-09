@@ -78,6 +78,7 @@ public class PlayerController : MonoBehaviour
         // Setting animator parameters
         anim.SetBool("PlayerRun", horizontalInput != 0);
         anim.SetBool("Grounded", isGrounded());
+        anim.SetBool("WallJumping", onWall());
 
         // Jumping
         if (Input.GetKey(KeyCode.Space))
