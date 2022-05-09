@@ -1602,6 +1602,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Phantom
       objectReference: {fileID: 0}
+    - target: {fileID: 5589317404460306583, guid: a0f9b818cd553f34abfee8aeb45eb96d, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0f9b818cd553f34abfee8aeb45eb96d, type: 3}
 --- !u!1001 &6626119733666069281
@@ -1729,7 +1733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6626119733813076988, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
       propertyPath: m_Size.y
-      value: 1.953204
+      value: 1.9785151
       objectReference: {fileID: 0}
     - target: {fileID: 6626119733813076988, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
       propertyPath: m_Offset.x
@@ -1737,7 +1741,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6626119733813076988, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
       propertyPath: m_Offset.y
-      value: -0.0047371984
+      value: -0.017392755
       objectReference: {fileID: 0}
     - target: {fileID: 6626119733813076988, guid: a026e1310f1d9e0409a77c2f0b1021c9, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.y
