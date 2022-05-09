@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
     public LayerMask groundLayer;
     public LayerMask wallLayer;
+    public Transform RightBoob;
     public float playerSpeed;
     public float jumpPower;
     public float jumpSpeed;
@@ -18,14 +19,11 @@ public class PlayerController : MonoBehaviour
 
     private float horizontalInput;
 
-    public Transform RightBoob;
-
     // Double jumps
     public int extraJumps;
     private int jumpCounter;
     public float jumpBuffer;
     public int canDoubleJump;
-    public float wallSlidingSpeed;
 
     // Coyote time (if you walk off a cliff you can still jump after)
     public float coyoteTimer;
@@ -34,8 +32,12 @@ public class PlayerController : MonoBehaviour
     // Wall jumping
     public float wallJumpX;
     public float wallJumpY;
+    public float wallSlidingSpeed;
 
-    
+    // Attacking
+    //private bool attacking = false;
+    //private float attackTimer = 0;
+    //private float attackCool = 0.25f;
 
     // Start is called before the first frame update
     void Start()
@@ -63,7 +65,6 @@ public class PlayerController : MonoBehaviour
             jumpBuffer += Time.deltaTime;
         }
 
-
         // Flip player in the direction they're moving in
         if (horizontalInput > 0.0f)
         {
@@ -73,6 +74,7 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale = new Vector3(-playerScaleX, playerScaleY, 1);
         }
+
         // Setting animator parameters
         anim.SetBool("PlayerRun", horizontalInput != 0);
         anim.SetBool("Grounded", isGrounded());
@@ -114,6 +116,12 @@ public class PlayerController : MonoBehaviour
                 coyoteCounter -= Time.deltaTime;
             }
         }
+
+        // Click to attack
+        if (Input.GetMouseButtonDown(0))
+        {
+            anim.SetTrigger("Attacking(trig)");
+        }
     }
 
     // Jump mechanics
@@ -122,7 +130,7 @@ public class PlayerController : MonoBehaviour
         // If you aren't on a wall or doing anything crazy, don't do anything
         if (coyoteCounter <= 0 && !onWall() && jumpCounter <= 0) return;
 
-        //anim.SetTrigger("Jump");
+        anim.SetTrigger("Jump");
 
         // Add sound for jump?
         if (onWall())
@@ -186,10 +194,5 @@ public class PlayerController : MonoBehaviour
         //RaycastHit2D raycastHit = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
         //RaycastHit2D raycastHit2 = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, new Vector2(-transform.localScale.x, 0), 0.1f, wallLayer);
         //return (raycastHit.collider != null && raycastHit2.collider != null);
-    }
-
-    public bool canAttack()
-    {
-        return !onWall();
     }
 }
