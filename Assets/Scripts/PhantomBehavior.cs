@@ -4,36 +4,29 @@ using UnityEngine;
 
 public class PhantomBehavior : MonoBehaviour
 {
-    public Transform player;
-    public float moveSpeed = .8f;
-    private Rigidbody2D phantRbody;
-    private Vector2 phantMovement;
-
+    public float phantSpeed;
+    public float range;
+    public float maxDistance;
+    private Vector2 wayPoint;
 
     // Start is called before the first frame update
     void Start()
     {
-        phantRbody = this.GetComponent<Rigidbody2D>();
+        SetNewDestination();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 direction = player.position - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        //phantRbody.rotation = angle;
-
-        direction.Normalize();
-        phantMovement = direction;
+        transform.position = Vector2.MoveTowards(transform.position, wayPoint, phantSpeed * Time.deltaTime);
+        if (Vector2.Distance(transform.position, wayPoint) < range)
+        {
+            SetNewDestination();
+        }
     }
 
-    private void FixedUpdate()
+    private void SetNewDestination()
     {
-        movePhantom(phantMovement);
-    }
-
-    private void movePhantom(Vector2 direction)
-    {
-        phantRbody.MovePosition((Vector2)transform.position + direction * moveSpeed * Time.deltaTime);
+        wayPoint = new Vector2(transform.position.x + Random.Range(-maxDistance, maxDistance), transform.position.y + Random.Range(-maxDistance, maxDistance));
     }
 }

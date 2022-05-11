@@ -36,9 +36,7 @@ public class PlayerController : MonoBehaviour
     public float wallSlidingSpeed;
 
     // Attacking
-    //private bool attacking = false;
-    //private float attackTimer = 0;
-    //private float attackCool = 0.25f;
+
 
     // Start is called before the first frame update
     void Start()
