@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     public float wallSlidingSpeed;
 
     // Dash + Dodge
+    float dashDirection = 1;
     bool canDash = true;
     bool isDashing;
     IEnumerator dashCoroutine;
@@ -98,7 +99,7 @@ public class PlayerController : MonoBehaviour
             {
                 StopCoroutine(dashCoroutine);
             }
-            dashCoroutine = Dash(2, 2, 1);
+            dashCoroutine = Dash(.3f, 1);
             StartCoroutine(dashCoroutine);
         }
         // Dodging (backward)
@@ -108,7 +109,7 @@ public class PlayerController : MonoBehaviour
             {
                 StopCoroutine(dashCoroutine);
             }
-            dashCoroutine = Dash(2, 2, -1f);
+            dashCoroutine = Dash(.3f, 1, -1);
             StartCoroutine(dashCoroutine);
         }*/
 
@@ -247,7 +248,7 @@ public class PlayerController : MonoBehaviour
         //return (raycastHit.collider != null && raycastHit2.collider != null);
     }
 
-    IEnumerator Dash(float dashDuration, float dashCooldown, float dashOrDodge)
+    IEnumerator Dash(float dashDuration, float dashCooldown)
     {
         isDashing = true;
         canDash = false;
@@ -257,6 +258,7 @@ public class PlayerController : MonoBehaviour
         rbody.gravityScale = 0;*/
         yield return new WaitForSeconds(dashDuration);
         isDashing = false;
+        rbody.velocity = Vector2.zero;
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
         //rbody.gravityScale = gravity;
