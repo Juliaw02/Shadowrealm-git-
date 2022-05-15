@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/Hall 1.unity
+    path: 
     guid: eec686578879b9f42ae30a6da4f8dbf5
   - enabled: 1
     path: Assets/Scenes/Hall_1.unity
@@ -53,4 +53,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Boss Room.unity
     guid: 5a6cb3ce4213f7443a5fac628442a610
+  - enabled: 1
+    path: Assets/Scenes/Main Menu.unity
+    guid: 176804ea23bd5254584b13961c4f5828
+  - enabled: 1
+    path: Assets/Scenes/Controls.unity
+    guid: 0e1ae7000c4e41e4683181cc95afa7f2
   m_configObjects: {}

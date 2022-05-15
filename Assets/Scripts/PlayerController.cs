@@ -35,6 +35,14 @@ public class PlayerController : MonoBehaviour
     public float wallJumpY;
     public float wallSlidingSpeed;
 
+    // Dash + Dodge
+    bool canDash = true;
+    bool isDashing;
+    IEnumerator dashCoroutine;
+
+    // Up dash
+    //private bool isUpDashing;
+
     // Attacking
 
 
@@ -51,7 +59,10 @@ public class PlayerController : MonoBehaviour
     {
         // A + D or left and right arrow keys to move left and right
         horizontalInput = Input.GetAxis("Horizontal");
-        rbody.velocity = new Vector2(horizontalInput * playerSpeed, rbody.velocity.y);
+        if (!isDashing)
+        {
+            rbody.velocity = new Vector2(horizontalInput * playerSpeed, rbody.velocity.y);
+        }
         if (isGrounded() || onWall()) {
             jumpBuffer = 0;
             jumpCounter = 1;
@@ -78,6 +89,29 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("PlayerRun", horizontalInput != 0);
         anim.SetBool("Grounded", isGrounded());
         anim.SetBool("WallJumping", onWall());
+
+
+        // Dashing (forward)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash == true)
+        {
+            if (dashCoroutine != null)
+            {
+                StopCoroutine(dashCoroutine);
+            }
+            dashCoroutine = Dash(2, 2, 1);
+            StartCoroutine(dashCoroutine);
+        }
+        // Dodging (backward)
+        /*if (Input.GetKeyDown(KeyCode.LeftControl) && canDash == true)
+        {
+            if (dashCoroutine != null)
+            {
+                StopCoroutine(dashCoroutine);
+            }
+            dashCoroutine = Dash(2, 2, -1f);
+            StartCoroutine(dashCoroutine);
+        }*/
+
 
         // Jumping
         if (Input.GetKey(KeyCode.Space))
@@ -121,6 +155,14 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             anim.SetTrigger("Attacking(trig)");
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isDashing)
+        {
+            rbody.AddForce(new Vector2(10, 0), ForceMode2D.Impulse);
         }
     }
 
@@ -168,7 +210,7 @@ public class PlayerController : MonoBehaviour
 
     private void WallJump()
     {
-        /**if (horizontalInput > 0.01f)
+        /*if (horizontalInput > 0.01f)
         {
             transform.localScale = new Vector3(-playerScaleX, playerScaleY, 1);
         }  */               
@@ -203,5 +245,20 @@ public class PlayerController : MonoBehaviour
         //RaycastHit2D raycastHit = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
         //RaycastHit2D raycastHit2 = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, new Vector2(-transform.localScale.x, 0), 0.1f, wallLayer);
         //return (raycastHit.collider != null && raycastHit2.collider != null);
+    }
+
+    IEnumerator Dash(float dashDuration, float dashCooldown, float dashOrDodge)
+    {
+        isDashing = true;
+        canDash = false;
+        /*rbody.velocity = new Vector2(rbody.velocity.x, 0f);
+        rbody.AddForce(new Vector2(dashDistance * direction, 0f), ForceMode2D.Impulse);
+        float gravity = rbody.gravityScale;
+        rbody.gravityScale = 0;*/
+        yield return new WaitForSeconds(dashDuration);
+        isDashing = false;
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+        //rbody.gravityScale = gravity;
     }
 }

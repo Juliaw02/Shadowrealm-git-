@@ -187,4 +187,26 @@ public class GameManager : MonoBehaviour
         }
 
     }
+
+    // Buttons
+
+    public void Play()
+    {
+        SceneManager.LoadScene("Hall_1");
+    }
+
+    public void Controls()
+    {
+        SceneManager.LoadScene("Controls");
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }
