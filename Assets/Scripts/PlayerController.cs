@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask wallLayer;
     public Transform RightBoob;
     public Transform Hall1Spawn;
+    private Vector2 originalVelocity;
     public float playerSpeed;
     public float jumpPower;
     public float jumpSpeed;
@@ -35,14 +36,22 @@ public class PlayerController : MonoBehaviour
     public float wallJumpY;
     public float wallSlidingSpeed;
 
-    // Dash + Dodge
-    float dashDirection = 1;
+    // Dash
+    private float dashDirection = 1;
+    private float gravity;
     bool canDash = true;
     bool isDashing;
     IEnumerator dashCoroutine;
 
+    // Dodge
+    private float dodgeDirection = -1;
+    bool canDodge = true;
+    bool isDodging;
+    IEnumerator dodgeCoroutine;
+
     // Up dash
-    //private bool isUpDashing;
+    bool canUpDash = true;
+    bool isUpDashing;
 
     // Attacking
 
@@ -53,6 +62,9 @@ public class PlayerController : MonoBehaviour
         rbody = GetComponent<Rigidbody2D>();
         boxCol = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
+
+        gravity = rbody.gravityScale;
+        originalVelocity = rbody.velocity;
     }
 
     // Update is called once per frame
@@ -60,7 +72,7 @@ public class PlayerController : MonoBehaviour
     {
         // A + D or left and right arrow keys to move left and right
         horizontalInput = Input.GetAxis("Horizontal");
-        if (!isDashing)
+        if (!isDashing && !isDodging && !isUpDashing)
         {
             rbody.velocity = new Vector2(horizontalInput * playerSpeed, rbody.velocity.y);
         }
@@ -80,10 +92,14 @@ public class PlayerController : MonoBehaviour
         if (horizontalInput > 0.0f)
         {
             transform.localScale = new Vector3(playerScaleX, playerScaleY, 1);
+            dashDirection = 1;
+            dodgeDirection = -1;
         } 
         else if (horizontalInput < -0.0f)
         {
             transform.localScale = new Vector3(-playerScaleX, playerScaleY, 1);
+            dashDirection = -1;
+            dodgeDirection = 1;
         }
 
         // Setting animator parameters
@@ -99,19 +115,34 @@ public class PlayerController : MonoBehaviour
             {
                 StopCoroutine(dashCoroutine);
             }
-            dashCoroutine = Dash(.3f, 1);
+            // (duration, cooldown)
+            dashCoroutine = Dash(.25f, .5f);
             StartCoroutine(dashCoroutine);
         }
         // Dodging (backward)
-        /*if (Input.GetKeyDown(KeyCode.LeftControl) && canDash == true)
+        if (Input.GetKeyDown(KeyCode.LeftControl) && canDash == true)
         {
-            if (dashCoroutine != null)
+            if (dodgeCoroutine != null)
             {
-                StopCoroutine(dashCoroutine);
+                StopCoroutine(dodgeCoroutine);
             }
-            dashCoroutine = Dash(.3f, 1, -1);
-            StartCoroutine(dashCoroutine);
-        }*/
+            // (duration, cooldown)
+            dodgeCoroutine = Dodge(.1f, .5f);
+            StartCoroutine(dodgeCoroutine);
+        }
+        // Up-dash
+        if (Input.GetKeyDown(KeyCode.C) && canUpDash == true)
+        {
+            UpDash();
+            isUpDashing = true;
+        }
+        if (Input.GetKeyUp(KeyCode.C) && isUpDashing == true)
+        {
+            rbody.velocity = Vector2.zero;
+            isUpDashing = false;
+            rbody.gravityScale = gravity;
+            //rbody.velocity = originalVelocity;
+        }
 
 
         // Jumping
@@ -163,7 +194,14 @@ public class PlayerController : MonoBehaviour
     {
         if (isDashing)
         {
-            rbody.AddForce(new Vector2(10, 0), ForceMode2D.Impulse);
+            //rbody.velocity = Vector2.zero;
+            //rbody.velocity = new Vector2(horizontalInput * 50, rbody.velocity.y);
+            rbody.AddForce(new Vector2(dashDirection * 20, 0), ForceMode2D.Impulse);
+        }
+
+        if (isDodging)
+        {
+            rbody.AddForce(new Vector2(dodgeDirection * 22, 0), ForceMode2D.Impulse);
         }
     }
 
@@ -221,6 +259,13 @@ public class PlayerController : MonoBehaviour
         //rbody.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) + wallJumpX, jumpPower);
     }
 
+    private void UpDash()
+    {
+        // set velocity to zero??
+        rbody.AddForce(new Vector2(0, 50), ForceMode2D.Impulse);
+        rbody.gravityScale = 0;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Spawn point for getting back to Hall 1
@@ -252,15 +297,27 @@ public class PlayerController : MonoBehaviour
     {
         isDashing = true;
         canDash = false;
-        /*rbody.velocity = new Vector2(rbody.velocity.x, 0f);
-        rbody.AddForce(new Vector2(dashDistance * direction, 0f), ForceMode2D.Impulse);
-        float gravity = rbody.gravityScale;
-        rbody.gravityScale = 0;*/
+        rbody.gravityScale = 0;
+        rbody.velocity = Vector2.zero;
         yield return new WaitForSeconds(dashDuration);
         isDashing = false;
-        rbody.velocity = Vector2.zero;
+        rbody.gravityScale = gravity;
+        rbody.velocity = originalVelocity;
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
-        //rbody.gravityScale = gravity;
+    }
+
+    IEnumerator Dodge(float dodgeDuration, float dodgeCooldown)
+    {
+        isDodging = true;
+        canDodge = false;
+        rbody.gravityScale = 0;
+        rbody.velocity = Vector2.zero;
+        yield return new WaitForSeconds(dodgeDuration);
+        isDodging = false;
+        rbody.gravityScale = gravity;
+        rbody.velocity = originalVelocity;
+        yield return new WaitForSeconds(dodgeCooldown);
+        canDodge = true;
     }
 }
