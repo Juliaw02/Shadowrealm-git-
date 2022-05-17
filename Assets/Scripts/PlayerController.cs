@@ -133,16 +133,19 @@ public class PlayerController : MonoBehaviour
         // Up-dash
         if (Input.GetKeyDown(KeyCode.C) && canUpDash == true)
         {
-            UpDash();
+            //UpDash();
             isUpDashing = true;
+            rbody.velocity = Vector2.zero;
+            rbody.gravityScale = 0;
+            rbody.AddForce(new Vector2(0, 50), ForceMode2D.Impulse);
         }
-        if (Input.GetKeyUp(KeyCode.C) && isUpDashing == true)
+        /*if (Input.GetKeyUp(KeyCode.C) && isUpDashing == true)
         {
             rbody.velocity = Vector2.zero;
             isUpDashing = false;
             rbody.gravityScale = gravity;
-            //rbody.velocity = originalVelocity;
-        }
+            rbody.velocity = originalVelocity;
+        }*/
 
 
         // Jumping
@@ -259,12 +262,12 @@ public class PlayerController : MonoBehaviour
         //rbody.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) + wallJumpX, jumpPower);
     }
 
-    private void UpDash()
+    /*private void UpDash()
     {
-        // set velocity to zero??
-        rbody.AddForce(new Vector2(0, 50), ForceMode2D.Impulse);
+        rbody.velocity = Vector2.zero;
         rbody.gravityScale = 0;
-    }
+        rbody.AddForce(new Vector2(0, 60), ForceMode2D.Impulse);
+    }*/
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
