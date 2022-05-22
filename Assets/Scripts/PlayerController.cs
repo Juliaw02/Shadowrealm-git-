@@ -139,13 +139,6 @@ public class PlayerController : MonoBehaviour
             rbody.gravityScale = 0;
             rbody.AddForce(new Vector2(0, 50), ForceMode2D.Impulse);
         }
-        /*if (Input.GetKeyUp(KeyCode.C) && isUpDashing == true)
-        {
-            rbody.velocity = Vector2.zero;
-            isUpDashing = false;
-            rbody.gravityScale = gravity;
-            rbody.velocity = originalVelocity;
-        }*/
 
 
         // Jumping
@@ -187,9 +180,15 @@ public class PlayerController : MonoBehaviour
         }
 
         // Click to attack
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && Input.GetAxis("Vertical") == 0)
         {
             anim.SetTrigger("Attacking(trig)");
+        }
+
+        // Up-swipe
+        if (Input.GetMouseButtonDown(0) && Input.GetAxis("Vertical") > 0)
+        {
+            anim.SetTrigger("UpAttacking");
         }
     }
 
