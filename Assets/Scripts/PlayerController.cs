@@ -53,8 +53,9 @@ public class PlayerController : MonoBehaviour
     bool canUpDash = true;
     bool isUpDashing;
 
-    // Attacking
-
+    // Health and stuff
+    private int playerHealth = 5;
+    private int currentPlayerHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -65,6 +66,8 @@ public class PlayerController : MonoBehaviour
 
         gravity = rbody.gravityScale;
         originalVelocity = rbody.velocity;
+
+        currentPlayerHealth = playerHealth;
     }
 
     // Update is called once per frame
@@ -111,6 +114,7 @@ public class PlayerController : MonoBehaviour
         // Dashing (forward)
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash == true)
         {
+            anim.SetTrigger("Dashing");
             if (dashCoroutine != null)
             {
                 StopCoroutine(dashCoroutine);
@@ -122,6 +126,7 @@ public class PlayerController : MonoBehaviour
         // Dodging (backward)
         if (Input.GetKeyDown(KeyCode.LeftControl) && canDash == true)
         {
+            anim.SetTrigger("Dodging");
             if (dodgeCoroutine != null)
             {
                 StopCoroutine(dodgeCoroutine);
@@ -134,6 +139,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C) && canUpDash == true)
         {
             //UpDash();
+            anim.SetTrigger("UpDashing");
             isUpDashing = true;
             rbody.velocity = Vector2.zero;
             rbody.gravityScale = 0;
@@ -196,8 +202,6 @@ public class PlayerController : MonoBehaviour
     {
         if (isDashing)
         {
-            //rbody.velocity = Vector2.zero;
-            //rbody.velocity = new Vector2(horizontalInput * 50, rbody.velocity.y);
             rbody.AddForce(new Vector2(dashDirection * 20, 0), ForceMode2D.Impulse);
         }
 
@@ -205,6 +209,16 @@ public class PlayerController : MonoBehaviour
         {
             rbody.AddForce(new Vector2(dodgeDirection * 22, 0), ForceMode2D.Impulse);
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        Debug.Log("finally something is happening");
+        /*if (other.gameObject.tag == "Enemy")
+        {
+            currentPlayerHealth--;
+            Debug.Log("you little klutz" + currentPlayerHealth);
+        }*/
     }
 
     // Jump mechanics
@@ -259,22 +273,6 @@ public class PlayerController : MonoBehaviour
         rbody.velocity = new Vector2(-horizontalInput * 100, jumpPower);
 
         //rbody.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) + wallJumpX, jumpPower);
-    }
-
-    /*private void UpDash()
-    {
-        rbody.velocity = Vector2.zero;
-        rbody.gravityScale = 0;
-        rbody.AddForce(new Vector2(0, 60), ForceMode2D.Impulse);
-    }*/
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // Spawn point for getting back to Hall 1
-        if (collision.tag == "Hall1")
-        {
-            transform.position = Hall1Spawn.position;
-        }
     }
 
     // Check if player is on the ground

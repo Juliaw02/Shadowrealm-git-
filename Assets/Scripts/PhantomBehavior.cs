@@ -9,10 +9,14 @@ public class PhantomBehavior : MonoBehaviour
     public float maxDistance;
     private Vector2 wayPoint;
 
+    private int phantHealth = 1;
+    private int currentPhantHealth;
+
     // Start is called before the first frame update
     void Start()
     {
         SetNewDestination();
+        currentPhantHealth = phantHealth;
     }
 
     // Update is called once per frame
@@ -28,5 +32,10 @@ public class PhantomBehavior : MonoBehaviour
     private void SetNewDestination()
     {
         wayPoint = new Vector2(transform.position.x + Random.Range(-maxDistance, maxDistance), transform.position.y + Random.Range(-maxDistance, maxDistance));
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("ladies and gents the phantom hit something");
     }
 }

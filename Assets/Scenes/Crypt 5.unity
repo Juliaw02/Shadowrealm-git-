@@ -2106,6 +2106,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Poltergeist
       objectReference: {fileID: 0}
+    - target: {fileID: 121078699674985417, guid: 3e92bdae18eaaf44f84b2af07c73987c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5191837282829425160, guid: 3e92bdae18eaaf44f84b2af07c73987c, type: 3}
       propertyPath: m_RootOrder
       value: 1

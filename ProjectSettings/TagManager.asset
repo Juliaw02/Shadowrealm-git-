@@ -35,14 +35,7 @@ TagManager:
   - bossRoom
   - Hall6_tR
   - eternalPeace
-  - Demon
-  - Poltergeist
-  - Banshee
-  - Phantom
-  - Haunt
-  - Revenant
-  - Wraith
-  - Shade
+  - Enemy
   layers:
   - Default
   - TransparentFX

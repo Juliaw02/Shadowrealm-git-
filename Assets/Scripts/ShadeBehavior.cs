@@ -9,11 +9,14 @@ public class ShadeBehavior : MonoBehaviour
     private Rigidbody2D shadeRbody;
     private Vector2 shadeMovement;
 
+    private int shadeHealth = 2;
+    private int currentShadeHealth;
 
     // Start is called before the first frame update
     void Start()
     {
         shadeRbody = this.GetComponent<Rigidbody2D>();
+        currentShadeHealth = shadeHealth;
     }
 
     // Update is called once per frame
