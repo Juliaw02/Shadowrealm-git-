@@ -16,6 +16,19 @@ public class PoltergeistBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // If hit enough times, die
+        if (currentPoltHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Melee")
+        {
+            currentPoltHealth--;
+            Debug.Log("Poltergeist health = " + currentPoltHealth);
+        }
     }
 }

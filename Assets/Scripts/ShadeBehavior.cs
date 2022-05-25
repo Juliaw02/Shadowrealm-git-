@@ -28,6 +28,12 @@ public class ShadeBehavior : MonoBehaviour
 
         direction.Normalize();
         shadeMovement = direction;
+
+        // If hit enough times, die
+        if (currentShadeHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void FixedUpdate()
@@ -38,5 +44,14 @@ public class ShadeBehavior : MonoBehaviour
     private void moveShade(Vector2 direction)
     {
         shadeRbody.MovePosition((Vector2)transform.position + direction * moveSpeed * Time.deltaTime);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Melee")
+        {
+            currentShadeHealth--;
+            Debug.Log("Shade health = " + currentShadeHealth);
+        }
     }
 }

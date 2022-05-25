@@ -36,6 +36,7 @@ TagManager:
   - Hall6_tR
   - eternalPeace
   - Enemy
+  - Melee
   layers:
   - Default
   - TransparentFX

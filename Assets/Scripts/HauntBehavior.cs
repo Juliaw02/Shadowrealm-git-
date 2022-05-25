@@ -16,6 +16,19 @@ public class HauntBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // If hit enough times, die
+        if (currentHauntHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Melee")
+        {
+            currentHauntHealth--;
+            Debug.Log("Haunt health = " + currentHauntHealth);
+        }
     }
 }

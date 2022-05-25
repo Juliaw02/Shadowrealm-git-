@@ -12,11 +12,15 @@ public class PhantomBehavior : MonoBehaviour
     private int phantHealth = 1;
     private int currentPhantHealth;
 
+    private MeleeScript script;
+
     // Start is called before the first frame update
     void Start()
     {
         SetNewDestination();
         currentPhantHealth = phantHealth;
+
+        script = gameObject.GetComponent<MeleeScript>();
     }
 
     // Update is called once per frame
@@ -27,6 +31,12 @@ public class PhantomBehavior : MonoBehaviour
         {
             SetNewDestination();
         }
+
+        // If hit enough times, die
+        if (currentPhantHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void SetNewDestination()
@@ -34,8 +44,12 @@ public class PhantomBehavior : MonoBehaviour
         wayPoint = new Vector2(transform.position.x + Random.Range(-maxDistance, maxDistance), transform.position.y + Random.Range(-maxDistance, maxDistance));
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log("ladies and gents the phantom hit something");
+        if (script)
+        {
+            currentPhantHealth--;
+            Debug.Log("Phantom health = " + currentPhantHealth);
+        }
     }
 }

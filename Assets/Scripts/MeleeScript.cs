@@ -27,4 +27,12 @@ public class MeleeScript : MonoBehaviour
             anim.SetTrigger("UpAttacking");
         }
     }
+
+    /*private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            
+        }
+    }*/
 }

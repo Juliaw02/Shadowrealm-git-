@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -54,8 +55,11 @@ public class PlayerController : MonoBehaviour
     bool isUpDashing;
 
     // Health and stuff
+    /*private bool vulnerable = true;
     private int playerHealth = 5;
-    private int currentPlayerHealth;
+    private float invulnerabilityTime = 1.2f;
+    private bool hurt = false;
+    private int currentPlayerHealth;*/
 
     // Start is called before the first frame update
     void Start()
@@ -67,12 +71,14 @@ public class PlayerController : MonoBehaviour
         gravity = rbody.gravityScale;
         originalVelocity = rbody.velocity;
 
-        currentPlayerHealth = playerHealth;
+        //currentPlayerHealth = playerHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // BASIC MOVEMENT
+
         // A + D or left and right arrow keys to move left and right
         horizontalInput = Input.GetAxis("Horizontal");
         if (!isDashing && !isDodging && !isUpDashing)
@@ -111,6 +117,8 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("WallJumping", onWall());
 
 
+        // GAINED ABILITIES
+
         // Dashing (forward)
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash == true)
         {
@@ -124,7 +132,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(dashCoroutine);
         }
         // Dodging (backward)
-        if (Input.GetKeyDown(KeyCode.LeftControl) && canDash == true)
+        if (Input.GetKeyDown(KeyCode.LeftControl) && canDodge == true)
         {
             anim.SetTrigger("Dodging");
             if (dodgeCoroutine != null)
@@ -146,6 +154,8 @@ public class PlayerController : MonoBehaviour
             rbody.AddForce(new Vector2(0, 50), ForceMode2D.Impulse);
         }
 
+        
+        // JUMPING STUFF
 
         // Jumping
         if (Input.GetKey(KeyCode.Space))
@@ -185,6 +195,9 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+
+        // MELEE
+
         // Click to attack
         if (Input.GetMouseButtonDown(0) && Input.GetAxis("Vertical") == 0)
         {
@@ -211,17 +224,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    /*private void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log("finally something is happening");
-        /*if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy")
         {
-            currentPlayerHealth--;
-            Debug.Log("you little klutz" + currentPlayerHealth);
-        }*/
-    }
+            if (vulnerable == true && currentPlayerHealth > 0)
+            {
+                hurt = true;
+                currentPlayerHealth--;
+                Debug.Log("Player health = " + currentPlayerHealth);
+                Debug.Log("Player will be invulnerable!");
+                StartCoroutine(Invulnerability());
+            }
+            //else if (currentPlayerHealth <= 0)
+            //{
 
-    // Jump mechanics
+            //}
+        }
+    }*/
+
+    // Jump mechanics (all the deets)
     private void Jump()
     {
         // If you aren't on a wall or doing anything crazy, don't do anything
@@ -320,4 +342,14 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(dodgeCooldown);
         canDodge = true;
     }
+
+    /*IEnumerator Invulnerability()
+    {
+        vulnerable = false;
+        // Wait 1.2 seconds before being vulnerable to taking damage again
+        yield return new WaitForSeconds(invulnerabilityTime);
+        Debug.Log("Warning: player is vulnerable");
+        vulnerable = true;
+        hurt = false;
+    }*/
 }
