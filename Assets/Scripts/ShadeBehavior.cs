@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShadeBehavior : MonoBehaviour
+public class ShadeBehavior : Enemy
 {
     public Transform player;
     public float moveSpeed = .8f;
@@ -10,7 +10,7 @@ public class ShadeBehavior : MonoBehaviour
     private Vector2 shadeMovement;
 
     private int shadeHealth = 2;
-    private int currentShadeHealth;
+    public int currentShadeHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -46,12 +46,9 @@ public class ShadeBehavior : MonoBehaviour
         shadeRbody.MovePosition((Vector2)transform.position + direction * moveSpeed * Time.deltaTime);
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    public override void TakeDamage(int damage)
     {
-        if (other.gameObject.tag == "Melee")
-        {
-            currentShadeHealth--;
-            Debug.Log("Shade health = " + currentShadeHealth);
-        }
+        currentShadeHealth -= damage;
+        Debug.Log("Shade health = " + currentShadeHealth);
     }
 }

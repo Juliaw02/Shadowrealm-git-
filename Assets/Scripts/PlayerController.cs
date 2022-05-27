@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public float jumpSpeed;
     public float playerScaleX;
     public float playerScaleY;
+    public float accel = 0.2f;
 
     private float horizontalInput;
 
@@ -36,6 +37,8 @@ public class PlayerController : MonoBehaviour
     public float wallJumpX;
     public float wallJumpY;
     public float wallSlidingSpeed;
+    bool lastWallState = false;
+    bool canWallJump = false;
 
     // Dash
     private float dashDirection = 1;
@@ -55,11 +58,11 @@ public class PlayerController : MonoBehaviour
     bool isUpDashing;
 
     // Health and stuff
-    /*private bool vulnerable = true;
+    private bool vulnerable = true;
     private int playerHealth = 5;
     private float invulnerabilityTime = 1.2f;
     private bool hurt = false;
-    private int currentPlayerHealth;*/
+    private int currentPlayerHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -71,7 +74,7 @@ public class PlayerController : MonoBehaviour
         gravity = rbody.gravityScale;
         originalVelocity = rbody.velocity;
 
-        //currentPlayerHealth = playerHealth;
+        currentPlayerHealth = playerHealth;
     }
 
     // Update is called once per frame
@@ -83,7 +86,25 @@ public class PlayerController : MonoBehaviour
         horizontalInput = Input.GetAxis("Horizontal");
         if (!isDashing && !isDodging && !isUpDashing)
         {
-            rbody.velocity = new Vector2(horizontalInput * playerSpeed, rbody.velocity.y);
+            float playerSpeedX = rbody.velocity.x;
+            if (horizontalInput != 0.0f && playerSpeedX < playerSpeed && playerSpeedX > -playerSpeed)
+            {
+                playerSpeedX = playerSpeedX + (playerSpeed * accel) * horizontalInput;
+            } else
+            {
+                float incr = playerSpeed * accel;
+                if (playerSpeedX > -incr && playerSpeedX < incr)
+                {
+                    playerSpeedX = 0;
+                } else if (playerSpeedX < 0)
+                {
+                    playerSpeedX += incr;
+                } else
+                {
+                    playerSpeedX -= incr;
+                }
+            }
+            rbody.velocity = new Vector2(playerSpeedX, rbody.velocity.y);
         }
         if (isGrounded() || onWall()) {
             jumpBuffer = 0;
@@ -180,7 +201,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             rbody.gravityScale = 2.5f;
-            rbody.velocity = new Vector2(horizontalInput * playerSpeed, rbody.velocity.y);
+            //rbody.velocity = new Vector2(horizontalInput * playerSpeed, rbody.velocity.y);
             
             // Reset counters when grounded
             if (isGrounded())
@@ -224,7 +245,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /*private void OnCollisionEnter2D(Collision2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "Enemy")
         {
@@ -241,7 +262,7 @@ public class PlayerController : MonoBehaviour
 
             //}
         }
-    }*/
+    }
 
     // Jump mechanics (all the deets)
     private void Jump()
@@ -290,9 +311,14 @@ public class PlayerController : MonoBehaviour
         /*if (horizontalInput > 0.01f)
         {
             transform.localScale = new Vector3(-playerScaleX, playerScaleY, 1);
-        }  */               
-        rbody.velocity = new Vector2(0, 0);
-        rbody.velocity = new Vector2(-horizontalInput * 100, jumpPower);
+        }  */
+
+        canWallJump = false;
+        //rbody.velocity = new Vector2(0, 0);
+        Debug.Log("wallJump " + horizontalInput);
+        //rbody.AddForce(new Vector2(dodgeDirection * 22, 5), ForceMode2D.Impulse);
+        float playerSpeedX = playerSpeed * dodgeDirection * 5;
+        rbody.velocity = new Vector2(playerSpeedX, jumpPower);
 
         //rbody.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) + wallJumpX, jumpPower);
     }
@@ -304,12 +330,29 @@ public class PlayerController : MonoBehaviour
         return raycastHit.collider != null;
     }
 
-    // Check if player is on a wall.'
+    // Check if player is on a wall.
     private bool onWall()
     {
-        return Physics2D.OverlapCircle(RightBoob.position, RightBoob.GetComponent<CircleCollider2D>().radius, wallLayer);
+        bool currentWallState = Physics2D.OverlapCircle(RightBoob.position, RightBoob.GetComponent<CircleCollider2D>().radius, wallLayer);
+        
+        if (currentWallState != lastWallState)
+        {
+            lastWallState = currentWallState;
+            
+            if (lastWallState == true)
+            {
+                // transition from off the wall to on the wall
+                canWallJump = true;
+            }
+            else
+            {
+                // transtion from on the wall to off the wall
+                canWallJump = false;
+            }
+        }
 
-    
+        return canWallJump;
+
         //RaycastHit2D raycastHit = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
         //RaycastHit2D raycastHit2 = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, new Vector2(-transform.localScale.x, 0), 0.1f, wallLayer);
         //return (raycastHit.collider != null && raycastHit2.collider != null);
@@ -343,7 +386,7 @@ public class PlayerController : MonoBehaviour
         canDodge = true;
     }
 
-    /*IEnumerator Invulnerability()
+    IEnumerator Invulnerability()
     {
         vulnerable = false;
         // Wait 1.2 seconds before being vulnerable to taking damage again
@@ -351,5 +394,5 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Warning: player is vulnerable");
         vulnerable = true;
         hurt = false;
-    }*/
+    }
 }

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DemonBehavior : MonoBehaviour
+public class DemonBehavior : Enemy
 {
     private int demonHealth = 2;
-    private int currentDemonHealth;
+    public int currentDemonHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -23,12 +23,9 @@ public class DemonBehavior : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    public override void TakeDamage(int damage)
     {
-        if (other.gameObject.tag == "Melee")
-        {
-            currentDemonHealth--;
-            Debug.Log("Demon health = " + currentDemonHealth);
-        }
+        currentDemonHealth -= damage;
+        Debug.Log("Demon health = " + currentDemonHealth);
     }
 }

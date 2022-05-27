@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoltergeistBehavior : MonoBehaviour
+public class PoltergeistBehavior : Enemy
 {
     private int poltHealth = 2;
-    private int currentPoltHealth;
+    public int currentPoltHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -23,12 +23,9 @@ public class PoltergeistBehavior : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    public override void TakeDamage(int damage)
     {
-        if (other.gameObject.tag == "Melee")
-        {
-            currentPoltHealth--;
-            Debug.Log("Poltergeist health = " + currentPoltHealth);
-        }
+        currentPoltHealth -= damage;
+        Debug.Log("Poltergeist health = " + currentPoltHealth);
     }
 }

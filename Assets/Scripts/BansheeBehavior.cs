@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BansheeBehavior : MonoBehaviour
+public class BansheeBehavior : Enemy
 {
     private int banHealth = 3;
-    private int currentBanHealth;
+    public int currentBanHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -23,12 +23,9 @@ public class BansheeBehavior : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    public override void TakeDamage(int damage)
     {
-        if (other.gameObject.tag == "Melee")
-        {
-            currentBanHealth--;
-            Debug.Log("Banshee health = " + currentBanHealth);
-        }
+        currentBanHealth -= damage;
+        Debug.Log("Banshee health = " + currentBanHealth);
     }
 }

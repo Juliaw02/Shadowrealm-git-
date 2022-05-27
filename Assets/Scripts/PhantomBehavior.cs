@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PhantomBehavior : MonoBehaviour
+public class PhantomBehavior : Enemy
 {
     public float phantSpeed;
     public float range;
@@ -10,17 +10,13 @@ public class PhantomBehavior : MonoBehaviour
     private Vector2 wayPoint;
 
     private int phantHealth = 1;
-    private int currentPhantHealth;
-
-    private MeleeScript script;
+    public int currentPhantHealth;
 
     // Start is called before the first frame update
     void Start()
     {
         SetNewDestination();
         currentPhantHealth = phantHealth;
-
-        script = gameObject.GetComponent<MeleeScript>();
     }
 
     // Update is called once per frame
@@ -44,12 +40,18 @@ public class PhantomBehavior : MonoBehaviour
         wayPoint = new Vector2(transform.position.x + Random.Range(-maxDistance, maxDistance), transform.position.y + Random.Range(-maxDistance, maxDistance));
     }
 
-    public void OnCollisionEnter2D(Collision2D other)
+    /*public void OnTriggerEnter2D(Collider2D other)
     {
-        if (script)
+        if (other.gameObject.tag == "Melee")
         {
             currentPhantHealth--;
             Debug.Log("Phantom health = " + currentPhantHealth);
         }
+    }*/
+
+    public override void TakeDamage(int damage)
+    {
+        currentPhantHealth -= damage;
+        Debug.Log("Phantom health = " + currentPhantHealth);
     }
 }

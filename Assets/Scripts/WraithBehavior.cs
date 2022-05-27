@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RevenantBehavior : Enemy
+public class WraithBehavior : Enemy
 {
-    private int revHealth = 4;
-    public int currentRevHealth;
+    private int wraithHealth = 4;
+    public int currentWraithHealth;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentRevHealth = revHealth;
+        currentWraithHealth = wraithHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
         // If hit enough times, die
-        if (currentRevHealth <= 0)
+        if (currentWraithHealth <= 0)
         {
             Destroy(gameObject);
         }
@@ -25,7 +25,7 @@ public class RevenantBehavior : Enemy
 
     public override void TakeDamage(int damage)
     {
-        currentRevHealth -= damage;
-        Debug.Log("Revenant health = " + currentRevHealth);
+        currentWraithHealth -= damage;
+        Debug.Log("Wraith health = " + currentWraithHealth);
     }
 }

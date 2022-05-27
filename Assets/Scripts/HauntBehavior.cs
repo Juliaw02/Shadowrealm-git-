@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HauntBehavior : MonoBehaviour
+public class HauntBehavior : Enemy
 {
     private int hauntHealth = 3;
-    private int currentHauntHealth;
+    public int currentHauntHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -23,12 +23,9 @@ public class HauntBehavior : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    public override void TakeDamage(int damage)
     {
-        if (other.gameObject.tag == "Melee")
-        {
-            currentHauntHealth--;
-            Debug.Log("Haunt health = " + currentHauntHealth);
-        }
+        currentHauntHealth -= damage;
+        Debug.Log("Haunt health = " + currentHauntHealth);
     }
 }
