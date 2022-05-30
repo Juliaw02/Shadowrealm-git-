@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    //public GameObject player;
+    //public Transform gravestone;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,11 +28,6 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene("Crypt 1");
         }
-        // From Crypt 1 back to Hall 1
-        //if (this.gameObject.tag == "Hall1" && other.gameObject.tag == "Player")
-        //{
-            //SceneManager.LoadScene("Hall_1");
-        //}
 
         // From Crypt 1 to Hall 2 (bottom left)
         if (this.gameObject.tag == "Hall2_bL" && other.gameObject.tag == "Player")

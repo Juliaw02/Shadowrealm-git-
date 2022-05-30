@@ -160,6 +160,7 @@ MonoBehaviour:
   jumpSpeed: 20
   playerScaleX: 1
   playerScaleY: 1
+  accel: 0.2
   extraJumps: 0
   jumpBuffer: 0
   canDoubleJump: 0
@@ -167,6 +168,7 @@ MonoBehaviour:
   wallJumpX: 200
   wallJumpY: 100
   wallSlidingSpeed: 0
+  health: []
 --- !u!114 &6626119733813076987
 MonoBehaviour:
   m_ObjectHideFlags: 0

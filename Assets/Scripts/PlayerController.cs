@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     public LayerMask wallLayer;
     public Transform RightBoob;
-    public Transform Hall1Spawn;
     private Vector2 originalVelocity;
     public float playerSpeed;
     public float jumpPower;
@@ -57,12 +56,17 @@ public class PlayerController : MonoBehaviour
     bool canUpDash = true;
     bool isUpDashing;
 
-    // Health and stuff
+    // Health
     private bool vulnerable = true;
     private int playerHealth = 5;
     private float invulnerabilityTime = 1.2f;
     private bool hurt = false;
     private int currentPlayerHealth;
+    private int maxPlayerHealth;
+    public GameObject[] health;
+
+    // Gravestones
+    public Transform grave1;
 
     // Start is called before the first frame update
     void Start()
@@ -75,6 +79,7 @@ public class PlayerController : MonoBehaviour
         originalVelocity = rbody.velocity;
 
         currentPlayerHealth = playerHealth;
+        maxPlayerHealth = 5;
     }
 
     // Update is called once per frame
@@ -106,6 +111,7 @@ public class PlayerController : MonoBehaviour
             }
             rbody.velocity = new Vector2(playerSpeedX, rbody.velocity.y);
         }
+
         if (isGrounded() || onWall()) {
             jumpBuffer = 0;
             jumpCounter = 1;
@@ -149,7 +155,7 @@ public class PlayerController : MonoBehaviour
                 StopCoroutine(dashCoroutine);
             }
             // (duration, cooldown)
-            dashCoroutine = Dash(.25f, .5f);
+            dashCoroutine = Dash(.18f, .5f);
             StartCoroutine(dashCoroutine);
         }
         // Dodging (backward)
@@ -194,9 +200,6 @@ public class PlayerController : MonoBehaviour
         if (onWall())
         {
             rbody.velocity = new Vector2(rbody.velocity.x, Mathf.Clamp(rbody.velocity.y, -wallSlidingSpeed, float.MaxValue));
-            //canWallJump = 1;
-            //rbody.gravityScale = 0;
-            //rbody.velocity = Vector2.zero;
         }
         else
         {
@@ -230,21 +233,64 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetTrigger("UpAttacking");
         }
+
+
+        // HEALTH
+        if (currentPlayerHealth == 0)
+        {
+            health[0].SetActive(false);
+            // Player respawns at last gravestone/spawn point
+        } 
+        else if (currentPlayerHealth == 1)
+        {
+            health[1].SetActive(false);
+        } 
+        else if (currentPlayerHealth == 2)
+        {
+            health[2].SetActive(false);
+        }
+        else if (currentPlayerHealth == 3)
+        {
+            health[3].SetActive(false);
+        }
+        else if (currentPlayerHealth == 4)
+        {
+            health[4].SetActive(false);
+        }
+
+
+        // GRAVESTONE SPAWN POINTS
+
+        // If player "dies," teleport to last used gravestone
+        if (currentPlayerHealth <= 0)
+        {
+            if (SceneManager.GetActiveScene().name == "Hall_1")
+            {
+                gameObject.transform.position = grave1.transform.position;
+            }
+            else if (SceneManager.GetActiveScene().name == "Crypt 1")
+            {
+                SceneManager.LoadScene("Hall_1");
+                gameObject.transform.position = grave1.transform.position;
+            }
+            // Add the other spawn points from the other scenes (somehow) + try to see if they were last triggered or something????
+        }
     }
 
     private void FixedUpdate()
     {
         if (isDashing)
         {
-            rbody.AddForce(new Vector2(dashDirection * 20, 0), ForceMode2D.Impulse);
+            rbody.AddForce(new Vector2(dashDirection * 14, 0), ForceMode2D.Impulse);
         }
 
         if (isDodging)
         {
-            rbody.AddForce(new Vector2(dodgeDirection * 22, 0), ForceMode2D.Impulse);
+            rbody.AddForce(new Vector2(dodgeDirection * 16, 0), ForceMode2D.Impulse);
         }
     }
 
+    // HEALTH (Cont.)
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "Enemy")
@@ -257,10 +303,22 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Player will be invulnerable!");
                 StartCoroutine(Invulnerability());
             }
-            //else if (currentPlayerHealth <= 0)
-            //{
+            // else if??
+        }
+    }
 
-            //}
+    // Gravestones + health
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // If near/on the gravestone, heal
+        if (other.gameObject.tag == "Gravestone" && currentPlayerHealth < maxPlayerHealth)
+        {
+            currentPlayerHealth = maxPlayerHealth;
+            health[0].SetActive(true);
+            health[1].SetActive(true);
+            health[2].SetActive(true);
+            health[3].SetActive(true);
+            health[4].SetActive(true);
         }
     }
 
@@ -308,11 +366,6 @@ public class PlayerController : MonoBehaviour
 
     private void WallJump()
     {
-        /*if (horizontalInput > 0.01f)
-        {
-            transform.localScale = new Vector3(-playerScaleX, playerScaleY, 1);
-        }  */
-
         canWallJump = false;
         //rbody.velocity = new Vector2(0, 0);
         Debug.Log("wallJump " + horizontalInput);

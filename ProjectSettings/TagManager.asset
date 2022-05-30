@@ -37,16 +37,17 @@ TagManager:
   - eternalPeace
   - Enemy
   - Melee
+  - Gravestone
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Gravestone
   - Water
   - UI
   - Ground
   - Wall
-  - 
+  - Player
   - 
   - 
   - 
