@@ -60,13 +60,18 @@ public class PlayerController : MonoBehaviour
     private bool vulnerable = true;
     private int playerHealth = 5;
     private float invulnerabilityTime = 1.2f;
-    private bool hurt = false;
+    bool hurt = false;
     private int currentPlayerHealth;
     private int maxPlayerHealth;
     public GameObject[] health;
 
     // Gravestones
     public Transform grave1;
+    bool grave2Active = false;
+    bool grave3Active = false;
+    bool grave4Active = false;
+    bool grave5Active = false;
+    bool grave6Active = false;
 
     // Start is called before the first frame update
     void Start()
@@ -235,7 +240,7 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        // HEALTH
+        // HEALTH HUD
         if (currentPlayerHealth == 0)
         {
             health[0].SetActive(false);
@@ -261,19 +266,202 @@ public class PlayerController : MonoBehaviour
 
         // GRAVESTONE SPAWN POINTS
 
-        // If player "dies," teleport to last used gravestone
+        // If player dies, teleport to last used gravestone
         if (currentPlayerHealth <= 0)
         {
             if (SceneManager.GetActiveScene().name == "Hall_1")
             {
                 gameObject.transform.position = grave1.transform.position;
             }
+            // If in Crypt 1, change back to Hall 1 and teleport player to Gravestone1
             else if (SceneManager.GetActiveScene().name == "Crypt 1")
             {
                 SceneManager.LoadScene("Hall_1");
                 gameObject.transform.position = grave1.transform.position;
             }
-            // Add the other spawn points from the other scenes (somehow) + try to see if they were last triggered or something????
+            // If in Hall 2, teleport player to last used gravestone in this scene
+            else if (SceneManager.GetActiveScene().name == "Hall 2")
+            {
+                if (grave2Active == true)
+                {
+                    gameObject.transform.position = new Vector2(334.2563f, 37.832f);
+                }
+                else if (grave3Active == true)
+                {
+                    gameObject.transform.position = new Vector2(189.98f, 55.193f);
+                }
+                // If both graves have not been activated in Hall 2, teleport player back to the beginning of Hall 2
+                else if (grave2Active == false && grave3Active == false)
+                {
+                    gameObject.transform.position = new Vector2(290.85f, -1.606f);
+                }
+            }
+            // If in Crypt 2, change back to Hall 2 and teleport player to last used gravestone
+            else if (SceneManager.GetActiveScene().name == "Crypt 2")
+            {
+                SceneManager.LoadScene("Hall 2");
+                if (grave2Active == true)
+                {
+                    gameObject.transform.position = new Vector2(334.2563f, 37.832f);
+                }
+                else if (grave3Active == true)
+                {
+                    gameObject.transform.position = new Vector2(189.98f, 55.193f);
+                }
+                // Teleport to beginning of Hall 2
+                else if (grave2Active == false && grave3Active == false)
+                {
+                    gameObject.transform.position = new Vector2(290.85f, -1.606f);
+                }
+            }
+            // If in Hall 3, teleport player to last used gravestone
+            else if (SceneManager.GetActiveScene().name == "Hall 3")
+            {
+                if (grave4Active == true)
+                {
+                    gameObject.transform.position = new Vector2(-17.26f, 76.77f);
+                }
+                // If Gravestone4 has not been used/activated, teleport player to the beginning of Hall 3
+                else if (grave4Active == false)
+                {
+                    gameObject.transform.position = new Vector2(56.97f, 80.97f);
+                }
+            }
+            // If in Crypt 3, change back to Hall 3 and teleport player to last used gravestone
+            else if (SceneManager.GetActiveScene().name == "Crypt_3")
+            {
+                SceneManager.LoadScene("Hall 3");
+                if (grave4Active == true)
+                {
+                    gameObject.transform.position = new Vector2(-17.26f, 76.77f);
+                }
+                // Teleport to beginning of Hall 3
+                else if (grave4Active == false)
+                {
+                    gameObject.transform.position = new Vector2(56.97f, 80.97f);
+                }
+            }
+            // If in Hall 4, teleport player to last used gravestone
+            else if (SceneManager.GetActiveScene().name == "Hall 3")
+            {
+                if (grave4Active == true)
+                {
+                    gameObject.transform.position = new Vector2(-17.26f, 76.77f);
+                }
+                else if (grave2Active == true)
+                {
+                    SceneManager.LoadScene("Hall 2");
+                    gameObject.transform.position = new Vector2(334.2563f, 37.832f);
+                }
+                // If Gravestone4 has not been used/activated, teleport player to the beginning of Hall 2/outside of Crypt 3
+                else if (grave4Active == false && grave2Active == false)
+                {
+                    SceneManager.LoadScene("Hall 2");
+                    gameObject.transform.position = new Vector2(303.8f, 96.15f);
+                }
+            }
+            // If in Crypt 4, change back to Hall 4 and teleport player to last used gravestone
+            else if (SceneManager.GetActiveScene().name == "Crypt 4")
+            {
+                if (grave4Active == true)
+                {
+                    SceneManager.LoadScene("Hall 3");
+                    gameObject.transform.position = new Vector2(-17.26f, 76.77f);
+                }
+                else if (grave2Active == true)
+                {
+                    SceneManager.LoadScene("Hall 2");
+                    gameObject.transform.position = new Vector2(334.2563f, 37.832f);
+                }
+                // Teleport player to the beginning of Hall 2/outside of Crypt 3
+                else if (grave4Active == false && grave2Active == false)
+                {
+                    SceneManager.LoadScene("Hall 2");
+                    gameObject.transform.position = new Vector2(303.8f, 96.15f);
+                }
+            }
+            // If in Hall 5, teleport player to last used gravestone
+            else if (SceneManager.GetActiveScene().name == "Hall 5")
+            {
+                if (grave5Active == true)
+                {
+                    gameObject.transform.position = new Vector2(-57.91f, 279.33f);
+                }
+                // If Gravestone5 has not been used/activated, teleport player to the beginning of Hall 5
+                else if (grave5Active == false)
+                {
+                    gameObject.transform.position = new Vector2(79.62f, 213.82f);
+                }
+            }
+            // If in Crypt 5, change back to Hall 5, and teleport player to last used gravestone
+            else if (SceneManager.GetActiveScene().name == "Crypt 5")
+            {
+                SceneManager.LoadScene("Hall 5");
+                if (grave5Active == true)
+                {
+                    gameObject.transform.position = new Vector2(-57.91f, 279.33f);
+                }
+                // Teleport player to the beginning of Hall 5
+                else if (grave5Active == false)
+                {
+                    gameObject.transform.position = new Vector2(79.62f, 213.82f);
+                }
+            }
+            // If in Hall 6, teleport player to last used gravestone
+            else if (SceneManager.GetActiveScene().name == "Hall 6")
+            {
+                if (grave6Active == true)
+                {
+                    gameObject.transform.position = new Vector2(-57.91f, 279.33f);
+                }
+                // If Gravestone6 has not been used/activated, teleport player to the beginning of Hall 6
+                else if (grave6Active == false)
+                {
+                    gameObject.transform.position = new Vector2(154.13f, 298.87f);
+                }
+            }
+            // If in Hall 7, teleport player to last used gravestone
+            else if (SceneManager.GetActiveScene().name == "Hall 7")
+            {
+                SceneManager.LoadScene("Hall 6");
+                if (grave6Active == true)
+                {
+                    gameObject.transform.position = new Vector2(-57.91f, 279.33f);
+                }
+                // Teleport player to the beginning of Hall 6
+                else if (grave6Active == false)
+                {
+                    gameObject.transform.position = new Vector2(154.13f, 298.87f);
+                }
+            }
+            // If the Sister Boss is activated, trigger the bad ending
+            else if (SceneManager.GetActiveScene().name == "Sister Boss")
+            {
+                SceneManager.LoadScene("Hall 6");
+                if (grave6Active == true)
+                {
+                    gameObject.transform.position = new Vector2(-57.91f, 279.33f);
+                }
+                // Teleport player to the beginning of Hall 6
+                else if (grave6Active == false)
+                {
+                    gameObject.transform.position = new Vector2(154.13f, 298.87f);
+                }
+            }
+            // If player enters the Boss Room, teleport player to last used gravestone
+            else if (SceneManager.GetActiveScene().name == "Boss Room")
+            {
+                SceneManager.LoadScene("Hall 6");
+                if (grave6Active == true)
+                {
+                    gameObject.transform.position = new Vector2(-57.91f, 279.33f);
+                }
+                // Teleport player to the beginning of Hall 6
+                else if (grave6Active == false)
+                {
+                    gameObject.transform.position = new Vector2(154.13f, 298.87f);
+                }
+            }
         }
     }
 
@@ -303,7 +491,6 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Player will be invulnerable!");
                 StartCoroutine(Invulnerability());
             }
-            // else if??
         }
     }
 
@@ -319,6 +506,48 @@ public class PlayerController : MonoBehaviour
             health[2].SetActive(true);
             health[3].SetActive(true);
             health[4].SetActive(true);
+        }
+
+        // Activating/deactivating each grave after being triggered
+        if (other.gameObject.name == "Gravestone2")
+        {
+            grave2Active = true;
+            grave3Active = false;
+            grave4Active = false;
+            grave5Active = false;
+            grave6Active = false;
+        }
+        else if (other.gameObject.name == "Gravestone3")
+        {
+            grave2Active = false;
+            grave3Active = true;
+            grave4Active = false;
+            grave5Active = false;
+            grave6Active = false;
+        }
+        else if (other.gameObject.name == "Gravestone4")
+        {
+            grave2Active = false;
+            grave3Active = false;
+            grave4Active = true;
+            grave5Active = false;
+            grave6Active = false;
+        }
+        else if (other.gameObject.name == "Gravestone5")
+        {
+            grave2Active = false;
+            grave3Active = false;
+            grave4Active = false;
+            grave5Active = true;
+            grave6Active = false;
+        }
+        else if (other.gameObject.name == "Gravestone6")
+        {
+            grave2Active = false;
+            grave3Active = false;
+            grave4Active = false;
+            grave5Active = false;
+            grave6Active = true;
         }
     }
 

@@ -57,6 +57,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Sister Boss.unity
     guid: fa4d75086bf53ee488b510ec9f3272d0
   - enabled: 1
+    path: Assets/Scenes/Bad Ending.unity
+    guid: c147a4276219d124f806a0a7f392bbd5
+  - enabled: 1
     path: Assets/Scenes/Boss Room.unity
     guid: 5a6cb3ce4213f7443a5fac628442a610
+  - enabled: 1
+    path: Assets/Scenes/Good Ending.unity
+    guid: 2949dcadd70710d46b9f6d910b68ef93
   m_configObjects: {}
