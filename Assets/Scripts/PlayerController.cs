@@ -185,6 +185,11 @@ public class PlayerController : MonoBehaviour
             rbody.gravityScale = 0;
             rbody.AddForce(new Vector2(0, 50), ForceMode2D.Impulse);
         }
+        if (!Input.GetKeyDown(KeyCode.C))
+        {
+            isUpDashing = false;
+            rbody.gravityScale = gravity;
+        }
 
         
         // JUMPING STUFF
