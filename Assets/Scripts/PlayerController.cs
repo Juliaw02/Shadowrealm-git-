@@ -468,6 +468,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+
     }
 
     private void FixedUpdate()
@@ -499,9 +500,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Gravestones + health
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // GRAVESTONES AND HEALTH
+
         // If near/on the gravestone, heal
         if (other.gameObject.tag == "Gravestone" && currentPlayerHealth < maxPlayerHealth)
         {

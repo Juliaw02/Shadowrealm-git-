@@ -38,6 +38,8 @@ TagManager:
   - Enemy
   - Melee
   - Gravestone
+  - GateTrigger
+  - Gate
   layers:
   - Default
   - TransparentFX
