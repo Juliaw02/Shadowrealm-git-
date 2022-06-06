@@ -10,7 +10,7 @@ public class ShadeBehavior : Enemy
     private Vector2 shadeMovement;
 
     private int shadeHealth = 2;
-    public int currentShadeHealth;
+    private int currentShadeHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -49,6 +49,6 @@ public class ShadeBehavior : Enemy
     public override void TakeDamage(int damage)
     {
         currentShadeHealth -= damage;
-        Debug.Log("Shade health = " + currentShadeHealth);
+        //Debug.Log("Shade health = " + currentShadeHealth);
     }
 }

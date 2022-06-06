@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     // SCENE CHANGES
@@ -76,112 +76,112 @@ public class GameManager : MonoBehaviour
         // From Crypt 3 to Hall 2 (bottom right)
         if (this.gameObject.tag == "Hall2_bR" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Crypt 3");
+            SceneManager.LoadScene("Hall 2");
         }
         // From Hall 2 back to Crypt 3
         if (this.gameObject.tag == "Crypt3_2" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Hall 3");
+            SceneManager.LoadScene("Crypt_3");
         }
 
         // From Hall 2 to Hall 4 
         if (this.gameObject.tag == "Hall4_1" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Crypt 3");
+            SceneManager.LoadScene("Hall 4");
         }
         // From Hall 4 back to Hall 2 (top right)
         if (this.gameObject.tag == "Hall2_tR" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Hall 3");
+            SceneManager.LoadScene("Hall 2");
         }
 
         // From Hall 4 to Crypt 4 
         if (this.gameObject.tag == "Crypt4_1" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Crypt 3");
+            SceneManager.LoadScene("Crypt 4");
         }
         // From Crypt 4 back to Hall 4
         if (this.gameObject.tag == "Hall4_2" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Hall 3");
+            SceneManager.LoadScene("Hall 4");
         }
 
         // From Crypt 4 to Hall 5 (bottom right)
         if (this.gameObject.tag == "Hall5_bR" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Crypt 3");
+            SceneManager.LoadScene("Hall 5");
         }
         // From Hall 5 back to Crypt 4
         if (this.gameObject.tag == "Crypt4_2" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Hall 3");
+            SceneManager.LoadScene("Crypt 4");
         }
 
         // From Hall 5 to Crypt 5
         if (this.gameObject.tag == "Crypt5_1" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Crypt 3");
+            SceneManager.LoadScene("Crypt 5");
         }
         // From Crypt 5 back to Hall 5 (top right)
         if (this.gameObject.tag == "Hall5_tR" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Hall 3");
+            SceneManager.LoadScene("Hall 5");
         }
 
         // From Crypt 5 to Hall 6 (bottom left)
         if (this.gameObject.tag == "Hall6_bL" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Crypt 3");
+            SceneManager.LoadScene("Hall 6");
         }
         // From Hall 6 back to Crypt 5
         if (this.gameObject.tag == "Crypt5_2" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Hall 3");
+            SceneManager.LoadScene("Crypt 5");
         }
 
         // From Hall 6 to Hall 7
         if (this.gameObject.tag == "Hall7" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Crypt 3");
+            SceneManager.LoadScene("Hall 7");
         }
         // From Hall 7 back to Hall 6 (top left)
         if (this.gameObject.tag == "Hall6_tL" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Hall 3");
+            SceneManager.LoadScene("Hall 6");
         }
 
         // From Hall 6 to Sister Boss Room (bottom entrance)
         if (this.gameObject.tag == "sBoss_bot" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Crypt 3");
+            SceneManager.LoadScene("Sister Boss");
         }
         // From Sister Boss Room back to Hall 6 from bottom entrance (bottom right)
         if (this.gameObject.tag == "Hall6_bR" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Hall 3");
+            SceneManager.LoadScene("Hall 6");
         }
 
         // From Hall 6 to Sister Boss Room (top entrance)
         if (this.gameObject.tag == "sBoss_top" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Crypt 3");
+            SceneManager.LoadScene("Sister Boss");
         }
         // There is no way to exit back to Hall 6 from the top entrance--you're screwed
 
         // From Hall 6 to Boss Room
         if (this.gameObject.tag == "bossRoom" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Crypt 3");
+            SceneManager.LoadScene("Boss Room");
         }
         // From Boss Room back to Hall 6 (top right)
         if (this.gameObject.tag == "Hall6_tR" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Hall 3");
+            SceneManager.LoadScene("Hall 6");
         }
         // From Boss Room to Eternal Peace
         if (this.gameObject.tag == "eternalPeace" && other.gameObject.tag == "Player")
         {
-            SceneManager.LoadScene("Hall 3");
+            SceneManager.LoadScene("Good Ending");
         }
 
     }
@@ -206,5 +206,10 @@ public class GameManager : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void Cheats()
+    {
+        SceneManager.LoadScene("Cheats");
     }
 }

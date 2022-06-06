@@ -5,7 +5,7 @@ using UnityEngine;
 public class RevenantBehavior : Enemy
 {
     private int revHealth = 4;
-    public int currentRevHealth;
+    private int currentRevHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +26,6 @@ public class RevenantBehavior : Enemy
     public override void TakeDamage(int damage)
     {
         currentRevHealth -= damage;
-        Debug.Log("Revenant health = " + currentRevHealth);
+        //Debug.Log("Revenant health = " + currentRevHealth);
     }
 }

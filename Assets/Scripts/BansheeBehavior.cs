@@ -5,7 +5,7 @@ using UnityEngine;
 public class BansheeBehavior : Enemy
 {
     private int banHealth = 3;
-    public int currentBanHealth;
+    private int currentBanHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +26,6 @@ public class BansheeBehavior : Enemy
     public override void TakeDamage(int damage)
     {
         currentBanHealth -= damage;
-        Debug.Log("Banshee health = " + currentBanHealth);
+        //Debug.Log("Banshee health = " + currentBanHealth);
     }
 }

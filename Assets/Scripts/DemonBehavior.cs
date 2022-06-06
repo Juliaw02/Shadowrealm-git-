@@ -5,7 +5,7 @@ using UnityEngine;
 public class DemonBehavior : Enemy
 {
     private int demonHealth = 2;
-    public int currentDemonHealth;
+    private int currentDemonHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +26,6 @@ public class DemonBehavior : Enemy
     public override void TakeDamage(int damage)
     {
         currentDemonHealth -= damage;
-        Debug.Log("Demon health = " + currentDemonHealth);
+        //Debug.Log("Demon health = " + currentDemonHealth);
     }
 }

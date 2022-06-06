@@ -39,7 +39,15 @@ TagManager:
   - Melee
   - Gravestone
   - GateTrigger
+  - GateUp
+  - GateDown
+  - Crypt1Trig
+  - Crypt2Trig
+  - Crypt3Trig
+  - Crypt4Trig
+  - Crypt5Trig
   - Gate
+  - Danger
   layers:
   - Default
   - TransparentFX
@@ -97,4 +105,7 @@ TagManager:
     locked: 0
   - name: GroundFront1
     uniqueID: 3137784935
+    locked: 0
+  - name: DangerCover
+    uniqueID: 3333086497
     locked: 0

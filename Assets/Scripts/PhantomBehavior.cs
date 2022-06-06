@@ -10,7 +10,7 @@ public class PhantomBehavior : Enemy
     private Vector2 wayPoint;
 
     private int phantHealth = 1;
-    public int currentPhantHealth;
+    private int currentPhantHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +52,6 @@ public class PhantomBehavior : Enemy
     public override void TakeDamage(int damage)
     {
         currentPhantHealth -= damage;
-        Debug.Log("Phantom health = " + currentPhantHealth);
+        //Debug.Log("Phantom health = " + currentPhantHealth);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class WraithBehavior : Enemy
 {
     private int wraithHealth = 4;
-    public int currentWraithHealth;
+    private int currentWraithHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +26,6 @@ public class WraithBehavior : Enemy
     public override void TakeDamage(int damage)
     {
         currentWraithHealth -= damage;
-        Debug.Log("Wraith health = " + currentWraithHealth);
+        //Debug.Log("Wraith health = " + currentWraithHealth);
     }
 }

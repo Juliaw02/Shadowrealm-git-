@@ -5,7 +5,7 @@ using UnityEngine;
 public class HauntBehavior : Enemy
 {
     private int hauntHealth = 3;
-    public int currentHauntHealth;
+    private int currentHauntHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +26,6 @@ public class HauntBehavior : Enemy
     public override void TakeDamage(int damage)
     {
         currentHauntHealth -= damage;
-        Debug.Log("Haunt health = " + currentHauntHealth);
+        //Debug.Log("Haunt health = " + currentHauntHealth);
     }
 }

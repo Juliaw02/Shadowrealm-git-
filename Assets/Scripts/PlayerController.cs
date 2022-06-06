@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public float accel = 0.2f;
 
     private float horizontalInput;
+    bool invulnCheatOn = false;
 
     // Double jumps
     public int extraJumps;
@@ -58,12 +59,12 @@ public class PlayerController : MonoBehaviour
 
     // Health
     private bool vulnerable = true;
-    private int playerHealth = 5;
     private float invulnerabilityTime = 1.2f;
     bool hurt = false;
     private int currentPlayerHealth;
-    private int maxPlayerHealth;
+    private int maxPlayerHealth = 5;
     public GameObject[] health;
+    public GameObject[] extraEmptyHealth;
 
     // Gravestones
     public Transform grave1;
@@ -72,6 +73,13 @@ public class PlayerController : MonoBehaviour
     bool grave4Active = false;
     bool grave5Active = false;
     bool grave6Active = false;
+
+    // CRYPTS
+    bool crypt1Done = false;
+    bool crypt2Done = false;
+    bool crypt3Done = false;
+    bool crypt4Done = false;
+    bool crypt5Done = false;
 
     // Start is called before the first frame update
     void Start()
@@ -83,8 +91,7 @@ public class PlayerController : MonoBehaviour
         gravity = rbody.gravityScale;
         originalVelocity = rbody.velocity;
 
-        currentPlayerHealth = playerHealth;
-        maxPlayerHealth = 5;
+        currentPlayerHealth = maxPlayerHealth;
     }
 
     // Update is called once per frame
@@ -147,6 +154,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("PlayerRun", horizontalInput != 0);
         anim.SetBool("Grounded", isGrounded());
         anim.SetBool("WallJumping", onWall());
+        anim.SetBool("IsUpDashing", isUpDashing = false);
 
 
         // GAINED ABILITIES
@@ -176,16 +184,17 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(dodgeCoroutine);
         }
         // Up-dash
-        if (Input.GetKeyDown(KeyCode.C) && canUpDash == true)
+        if (Input.GetKey(KeyCode.C) && canUpDash == true)
         {
             //UpDash();
-            anim.SetTrigger("UpDashing");
+            //anim.SetTrigger("UpDashing")
+            anim.SetBool("IsUpDashing", isUpDashing = true);
             isUpDashing = true;
             rbody.velocity = Vector2.zero;
             rbody.gravityScale = 0;
             rbody.AddForce(new Vector2(0, 50), ForceMode2D.Impulse);
         }
-        if (!Input.GetKeyDown(KeyCode.C))
+        if (!Input.GetKey(KeyCode.C))
         {
             isUpDashing = false;
             rbody.gravityScale = gravity;
@@ -235,13 +244,17 @@ public class PlayerController : MonoBehaviour
         // Click to attack
         if (Input.GetMouseButtonDown(0) && Input.GetAxis("Vertical") == 0)
         {
-            anim.SetTrigger("Attacking(trig)");
+            anim.SetBool("Attacking", true);
         }
-
         // Up-swipe
-        if (Input.GetMouseButtonDown(0) && Input.GetAxis("Vertical") > 0)
+        else if (Input.GetMouseButtonDown(0) && Input.GetAxis("Vertical") > 0)
         {
-            anim.SetTrigger("UpAttacking");
+            anim.SetBool("UpAttacking(b)", true);
+        }
+        else if (!Input.GetMouseButtonDown(0))
+        {
+            anim.SetBool("Attacking", false);
+            anim.SetBool("UpAttacking(b)", false);
         }
 
 
@@ -266,6 +279,64 @@ public class PlayerController : MonoBehaviour
         else if (currentPlayerHealth == 4)
         {
             health[4].SetActive(false);
+        }
+        else if (currentPlayerHealth == 5)
+        {
+            health[5].SetActive(false);
+        }
+        else if (currentPlayerHealth == 6)
+        {
+            health[6].SetActive(false);
+        }
+        else if (currentPlayerHealth == 7)
+        {
+            health[7].SetActive(false);
+        }
+        else if (currentPlayerHealth == 8)
+        {
+            health[8].SetActive(false);
+        }
+        else if (currentPlayerHealth == 9)
+        {
+            // 10th health gone
+            health[9].SetActive(false);
+        }
+
+
+        // Marking when crypts are done
+        if (SceneManager.GetActiveScene().name == "Hall_1")
+        {
+            crypt1Done = false;
+        }
+        if (SceneManager.GetActiveScene().name == "Hall 2" || SceneManager.GetActiveScene().name == "Crypt 2")
+        {
+            crypt1Done = true;
+        }
+        if (SceneManager.GetActiveScene().name == "Hall 3" || SceneManager.GetActiveScene().name == "Crypt_3")
+        {
+            crypt1Done = true;
+            crypt2Done = true;
+        }
+        if (SceneManager.GetActiveScene().name == "Hall 4" || SceneManager.GetActiveScene().name == "Crypt 4")
+        {
+            crypt1Done = true;
+            crypt2Done = true;
+            crypt3Done = true;
+        }
+        if (SceneManager.GetActiveScene().name == "Hall 5" || SceneManager.GetActiveScene().name == "Crypt 5")
+        {
+            crypt1Done = true;
+            crypt2Done = true;
+            crypt3Done = true;
+            crypt4Done = true;
+        }
+        if (SceneManager.GetActiveScene().name == "Hall 6" || SceneManager.GetActiveScene().name == "Hall 7" || SceneManager.GetActiveScene().name == "Boss Room" || SceneManager.GetActiveScene().name == "Sister Boss")
+        {
+            crypt1Done = true;
+            crypt2Done = true;
+            crypt3Done = true;
+            crypt4Done = true;
+            crypt5Done = true;
         }
 
 
@@ -469,6 +540,50 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+
+        // CHEATS
+
+        // Invulnerability cheat lol
+        if (invulnCheatOn == false && Input.GetKeyDown(KeyCode.I))
+        {
+            invulnCheatOn = true;
+            vulnerable = false;
+            Debug.Log("Invulnerability Cheat ON");
+        }
+        if (invulnCheatOn == true && Input.GetKeyDown(KeyCode.O))
+        {
+            invulnCheatOn = false;
+            vulnerable = true;
+            Debug.Log("Invulnerability Cheat OFF");
+        }
+
+        // Skip to each crypt
+
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            SceneManager.LoadScene("Crypt 1");
+            gameObject.transform.position = new Vector2(202.84f, -0.39f);
+        }
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            SceneManager.LoadScene("Crypt 2");
+            gameObject.transform.position = new Vector2(127f, 80.91f);
+        }
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            SceneManager.LoadScene("Crypt_3");
+            gameObject.transform.position = new Vector2(203.31f, 94.66f);
+        }
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            SceneManager.LoadScene("Crypt 4");
+            gameObject.transform.position = new Vector2(148.11f, 214.21f);
+        }
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            SceneManager.LoadScene("Crypt 5");
+            gameObject.transform.position = new Vector2(44.51f, 298.31f);
+        }
     }
 
     private void FixedUpdate()
@@ -489,7 +604,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            if (vulnerable == true && currentPlayerHealth > 0)
+            if (vulnerable == true && invulnCheatOn == false && currentPlayerHealth > 0)
             {
                 hurt = true;
                 currentPlayerHealth--;
@@ -502,6 +617,20 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Danger fog
+        if (other.gameObject.tag == "Danger")
+        {
+            canWallJump = false;
+            if (vulnerable == true && invulnCheatOn == false && currentPlayerHealth > 0)
+            {
+                hurt = true;
+                currentPlayerHealth--;
+                Debug.Log("Player health = " + currentPlayerHealth);
+                Debug.Log("Player will be invulnerable!");
+                StartCoroutine(Invulnerability());
+            }
+        }
+
         // GRAVESTONES AND HEALTH
 
         // If near/on the gravestone, heal
@@ -513,6 +642,109 @@ public class PlayerController : MonoBehaviour
             health[2].SetActive(true);
             health[3].SetActive(true);
             health[4].SetActive(true);
+
+            if (crypt1Done == true)
+            {
+                health[5].SetActive(true);
+            }
+            if (crypt2Done == true)
+            {
+                health[5].SetActive(true);
+                health[6].SetActive(true);
+            }
+            if (crypt3Done == true)
+            {
+                health[5].SetActive(true);
+                health[6].SetActive(true);
+                health[7].SetActive(true);
+            }
+            if (crypt4Done == true)
+            {
+                health[5].SetActive(true);
+                health[6].SetActive(true);
+                health[7].SetActive(true);
+                health[8].SetActive(true);
+            }
+            if (crypt5Done == true)
+            {
+                health[5].SetActive(true);
+                health[6].SetActive(true);
+                health[7].SetActive(true);
+                health[8].SetActive(true);
+                health[9].SetActive(true);
+            }
+        }
+
+        // Add extra health after each Crypt is completed
+        if (other.gameObject.tag == "Crypt1Trig")
+        {
+            maxPlayerHealth = 6;
+            currentPlayerHealth = maxPlayerHealth;
+            crypt1Done = true;
+            extraEmptyHealth[0].SetActive(true);
+            health[1].SetActive(true);
+            health[2].SetActive(true);
+            health[3].SetActive(true);
+            health[4].SetActive(true);
+            health[5].SetActive(true);
+        }
+        if (other.gameObject.tag == "Crypt2Trig")
+        {
+            maxPlayerHealth = 7;
+            currentPlayerHealth = maxPlayerHealth;
+            crypt2Done = true;
+            extraEmptyHealth[1].SetActive(true);
+            health[1].SetActive(true);
+            health[2].SetActive(true);
+            health[3].SetActive(true);
+            health[4].SetActive(true);
+            health[5].SetActive(true);
+            health[6].SetActive(true);
+        }
+        if (other.gameObject.tag == "Crypt3Trig")
+        {
+            maxPlayerHealth = 8;
+            currentPlayerHealth = maxPlayerHealth;
+            crypt3Done = true;
+            extraEmptyHealth[2].SetActive(true);
+            health[1].SetActive(true);
+            health[2].SetActive(true);
+            health[3].SetActive(true);
+            health[4].SetActive(true);
+            health[5].SetActive(true);
+            health[6].SetActive(true);
+            health[7].SetActive(true);
+        }
+        if (other.gameObject.tag == "Crypt4Trig")
+        {
+            maxPlayerHealth = 9;
+            currentPlayerHealth = maxPlayerHealth;
+            crypt4Done = true;
+            extraEmptyHealth[3].SetActive(true);
+            health[1].SetActive(true);
+            health[2].SetActive(true);
+            health[3].SetActive(true);
+            health[4].SetActive(true);
+            health[5].SetActive(true);
+            health[6].SetActive(true);
+            health[7].SetActive(true);
+            health[8].SetActive(true);
+        }
+        if (other.gameObject.tag == "Crypt5Trig")
+        {
+            maxPlayerHealth = 10;
+            currentPlayerHealth = maxPlayerHealth;
+            crypt5Done = true;
+            extraEmptyHealth[4].SetActive(true);
+            health[1].SetActive(true);
+            health[2].SetActive(true);
+            health[3].SetActive(true);
+            health[4].SetActive(true);
+            health[5].SetActive(true);
+            health[6].SetActive(true);
+            health[7].SetActive(true);
+            health[8].SetActive(true);
+            health[9].SetActive(true);
         }
 
         // Activating/deactivating each grave after being triggered
@@ -606,7 +838,7 @@ public class PlayerController : MonoBehaviour
         //rbody.velocity = new Vector2(0, 0);
         Debug.Log("wallJump " + horizontalInput);
         //rbody.AddForce(new Vector2(dodgeDirection * 22, 5), ForceMode2D.Impulse);
-        float playerSpeedX = playerSpeed * dodgeDirection * 5;
+        float playerSpeedX = playerSpeed * dodgeDirection * 4;
         rbody.velocity = new Vector2(playerSpeedX, jumpPower);
 
         //rbody.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) + wallJumpX, jumpPower);

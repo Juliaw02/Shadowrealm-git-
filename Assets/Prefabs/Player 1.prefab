@@ -235,6 +235,18 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   grave1: {fileID: 0}
+  crypt1Enemies:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  crypt2Enemies: []
+  crypt3Enemies: []
+  crypt4Enemies: []
+  crypt5Enemies: []
 --- !u!114 &6432676549146958627
 MonoBehaviour:
   m_ObjectHideFlags: 0

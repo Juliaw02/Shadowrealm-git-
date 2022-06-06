@@ -5,7 +5,7 @@ using UnityEngine;
 public class PoltergeistBehavior : Enemy
 {
     private int poltHealth = 2;
-    public int currentPoltHealth;
+    private int currentPoltHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +26,6 @@ public class PoltergeistBehavior : Enemy
     public override void TakeDamage(int damage)
     {
         currentPoltHealth -= damage;
-        Debug.Log("Poltergeist health = " + currentPoltHealth);
+        //Debug.Log("Poltergeist health = " + currentPoltHealth);
     }
 }
